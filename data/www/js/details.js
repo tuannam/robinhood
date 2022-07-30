@@ -6,7 +6,6 @@ const loadMovie = (code) => {
         let titles = movie["article_title"].split('-');
         let chapters = ""
         movie['extra_info'].forEach(chapter => {
-            console.log(chapter);
             let url = chapter["link"].trim();
             chapters += `<a href="/?play/${encodeURIComponent(url)}"><span class="chapter">${chapter["name"]}</span></a>`
         });
