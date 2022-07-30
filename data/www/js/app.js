@@ -3,6 +3,17 @@ let offset = 0;
 let busy = false
 box = document.querySelector('.container');
 
+
+function movideCard(code, title, image) {
+  return `<div class="movie">
+    <div class="movie-image"> 
+      <span class="play"><span class="name">${title}</span></span> 
+      <a href="/?details/${code}"><img src="${image}" alt="" /></a> 
+    </div>
+    <div class="rating"><span class="comments"></span> </div>
+  </div>`
+};
+
 const loadMore = () => {
   console.log("near bottom!");
   if (busy) {
@@ -18,13 +29,7 @@ const loadMore = () => {
         if (offset % 5 == 0) {
           output += `<div class="box">`
         } 
-        (output += `<div class="movie">
-                      <div class="movie-image"> 
-                        <span class="play"><span class="name">${article_title}</span></span> 
-                        <a href="#"><img src="${article_image}" alt="" /></a> 
-                      </div>
-                      <div class="rating"><span class="comments"></span> </div>
-                    </div>`)
+        (output += movideCard(article_code, article_title, article_image))
         offset = offset + 1;
         if (offset % 5 == 0) {
           output += `</div>`
@@ -57,12 +62,7 @@ const showMovies = (name, category, container, all = false) => {
         if (offset % 5 == 0) {
           output += `<div class="box">`
         }
-        (output += `<div class="movie">
-                      <div class="movie-image"> <span class="play"><span class="name">${article_title}</span></span> 
-                      <a href="#"><img src="${article_image}" alt="" /></a> </div>
-                      <div class="rating">               
-                      <span class="comments"></span> </div>
-                    </div>`)
+        (output += movideCard(article_code, article_title, article_image))
         offset = offset + 1;       
         if (offset % 5 == 0) {
           output += `</div>`
@@ -94,6 +94,11 @@ if (path.startsWith('?phimle')) {
   box = document.querySelector('.container')
   box.innerHTML = `<div class="phim-chieu-rap"></div>`
   document.addEventListener("DOMContentLoaded", showMovies('Phim Chiếu Rạp', 'phimchieurap', '.phim-chieu-rap', true));
+} else if (path.startsWith('?details')) {
+  box = document.querySelector('.container')
+  let code = path.substring(9);
+  box.innerHTML = `<div class="details"></div>`
+  document.addEventListener("DOMContentLoaded", loadMovie(code));
 } else {
   document.addEventListener("DOMContentLoaded", showMovies('Phim Chiếu Rạp', 'phimchieurap', '.phim-chieu-rap'));
   document.addEventListener("DOMContentLoaded", showMovies('Phim Lẻ', 'phimle', '.phim-le'));

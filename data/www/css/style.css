@@ -259,13 +259,14 @@ h1#logo a {
 	cursor:pointer;
 	display:none;
 }
-.movie span.name {
+.name {
 	font-weight:bold;
-	color:#fff;
+	color:hwb(112 49% 7%);
 	font-size:14px;
 	text-align:center;
 	padding-top:160px;
 	display:block;
+	padding: 5;
 }
 .box .last {
 	padding:0;
