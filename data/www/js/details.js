@@ -2,14 +2,12 @@ const loadMovie = (code) => {
     let box = document.querySelector('.details')
     $.getJSON(`/cgi-bin/details.cgi?${code}`, function(movies) {  
         let movie = movies[0];
-        // console.log(movie);
         let titles = movie["article_title"].split('-');
         let chapters = ""
         movie['extra_info'].forEach(chapter => {
             let url = chapter["link"].trim();
             chapters += `<a href="/?play/${encodeURIComponent(url)}"><span class="chapter">${chapter["name"]}</span></a>`
         });
-        console.log(chapters);
         box.innerHTML = 
         `<table>
             <tr valign="top">

@@ -57,7 +57,7 @@ function launchApp() {
   
 	return connectToSession()
 	.then((session)=> {
-		var videoSrc = document.querySelector('.js-video').getAttribute('src');
+		// var videoSrc = document.querySelector('.js-video').getAttribute('src');
 		var mediaInfo = new chrome.cast.media.MediaInfo(videoSrc);
 		mediaInfo.contentType = 'video/mp4';
 		var request = new chrome.cast.media.LoadRequest(mediaInfo);
