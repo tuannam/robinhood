@@ -268,6 +268,17 @@ h1#logo a {
 	display:block;
 	padding: 5;
 }
+
+.chapter {
+	font-weight:bold;
+	color:hwb(60 7% 6%);
+	font-size:16px;
+	text-align:center;
+	display:block;
+	padding-left: 20;
+	padding-right: 20;
+}
+
 .box .last {
 	padding:0;
 }

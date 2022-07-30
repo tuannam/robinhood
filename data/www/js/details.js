@@ -7,27 +7,29 @@ const loadMovie = (code) => {
         let chapters = ""
         movie['extra_info'].forEach(chapter => {
             console.log(chapter);
-            chapters += `<a href="/?play/${chapter["link"]}"><span class="name">${chapter["name"]}</span></a> `
+            let url = chapter["link"].trim();
+            chapters += `<a href="/?play/${encodeURIComponent(url)}"><span class="chapter">${chapter["name"]}</span></a>`
         });
         console.log(chapters);
-        box.innerHTML = `<table>
-                            <tr valign="top">
-                                <td><img src="${movie["article_image"]}" alt="" /></td>
-                            </tr>
-                            <tr valign="top">
-                                <td>
-                                <article class="flim-info">
-                                <div class="pc">
-                                    <h2 class="flim-title vi">${titles[0]}</h2>
-                                    <h3 class="flim-title eng">${titles[1]}</h3>
-                                </div>
-                                </article>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>${chapters}</td>
-                            </tr>
-                        </table>
+        box.innerHTML = 
+        `<table>
+            <tr valign="top">
+                <td><img src="${movie["article_image"]}" alt="" /></td>
+            </tr>
+            <tr valign="top">
+                <td>
+                <article class="flim-info">
+                <div class="pc">
+                    <h2 class="flim-title vi">${titles[0]}</h2>
+                    <h3 class="flim-title eng">${titles[1]}</h3>
+                </div>
+                </article>
+                </td>
+            </tr>
+            <tr>
+                <td>${chapters}</td>
+            </tr>
+        </table>
         `
         }); 
     

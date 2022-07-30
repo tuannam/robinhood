@@ -99,6 +99,12 @@ if (path.startsWith('?phimle')) {
   let code = path.substring(9);
   box.innerHTML = `<div class="details"></div>`
   document.addEventListener("DOMContentLoaded", loadMovie(code));
+} else if (path.startsWith('?play')) {
+  box = document.querySelector('.container')
+  box.innerHTML = `<div class="play-area"></div>`
+  let url = decodeURIComponent(path.substring(6));
+  console.log(url);
+  document.addEventListener("DOMContentLoaded", playMovie(url));
 } else {
   document.addEventListener("DOMContentLoaded", showMovies('Phim Chiếu Rạp', 'phimchieurap', '.phim-chieu-rap'));
   document.addEventListener("DOMContentLoaded", showMovies('Phim Lẻ', 'phimle', '.phim-le'));
