@@ -208,12 +208,10 @@ h1#logo a {
 #main {
 	border-bottom:1px dashed #413e3e;
 }
-#content {
-}
 .box {
 	width:980px;
 	border-bottom:1px dashed #413e3e;
-	padding-bottom:21px;
+	padding-bottom:222px;
 }
 .box .head {
 	width:980px;
@@ -455,3 +453,27 @@ h1#logo a {
   [aria-hidden="true"] {
 	display: none;
   }
+
+  .btn-container {
+	justify-content: space-between;
+	flex-direction: column;
+	height: 100vh;
+	display: flex;
+  }
+  .btn-container .btn-holder {
+	justify-content: flex-start;
+	display: flex;
+  }
+
+  .btn-container .btn-holder {
+	justify-content: flex-start;
+	display: flex;
+  }
+
+  .btn-container .btn-holder .more {
+	font-weight:bold;
+	color:hwb(44 6% 5%);
+	font-size:18px;
+	text-align: left;
+	display:block;	
+}

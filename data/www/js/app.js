@@ -16,7 +16,7 @@ function movideCard(code, title, image) {
 
 const loadMore = () => {
   console.log("near bottom!");
-  if (busy) {
+  if (busy || category == "") {
     return
   }
   busy = true
@@ -107,9 +107,10 @@ if (path.startsWith('?phimle')) {
   console.log(url);
   document.addEventListener("DOMContentLoaded", playMovie(url));
 } else {
+  $('#more-container').hide();
   document.addEventListener("DOMContentLoaded", showMovies('Phim Chiếu Rạp', 'phimchieurap', '.phim-chieu-rap'));
   document.addEventListener("DOMContentLoaded", showMovies('Phim Lẻ', 'phimle', '.phim-le'));
-  document.addEventListener("DOMContentLoaded", showMovies('Phim Bộ', 'phimbo', '.phim-bo'));
+  document.addEventListener("DOMContentLoaded", showMovies('Phim Bộ', 'phimbo', '.phim-bo'));  
 }
 
 $(window).scroll(function() {
@@ -118,4 +119,8 @@ $(window).scroll(function() {
       loadMore();
     }      
   }
+});
+
+$('#more-btn').click(function(e) {  
+  loadMore();
 });
