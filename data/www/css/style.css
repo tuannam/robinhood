@@ -275,8 +275,8 @@ h1#logo a {
 	font-size:16px;
 	text-align:center;
 	display:block;
-	padding-left: 20;
-	padding-right: 20;
+	margin-left: 20;
+	margin-right: 20;
 }
 
 .box .last {

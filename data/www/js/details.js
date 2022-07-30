@@ -5,8 +5,18 @@ const loadMovie = (code) => {
         let titles = movie["article_title"].split('-');
         let chapters = ""
         movie['extra_info'].forEach(chapter => {
+            chapters += `<span class="chapter">`
             let url = chapter["link"].trim();
-            chapters += `<a href="/?play/${encodeURIComponent(url)}"><span class="chapter">${chapter["name"]}</span></a>`
+            chapters += `<a href="/?play/${encodeURIComponent(url)}">${chapter["name"]}</a>`
+            if (chapter["link2"]) {
+                let url2 = chapter["link2"].trim();
+                chapters += `&nbsp;&nbsp;<a href="/?play/${encodeURIComponent(url2)}">Link 2</a>`
+            }
+            if (chapter["link3"]) {
+                let url3 = chapter["link3"].trim();
+                chapters += `&nbsp;&nbsp;<a href="/?play/${encodeURIComponent(url3)}">Link 3</a>`
+            }
+            chapter += `</span>`
         });
         box.innerHTML = 
         `<table>
