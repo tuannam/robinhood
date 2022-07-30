@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo 'Content-Type: application/json'
-source /data/www/cgi-bin/scan_caletory.sh
+source ./scan_caletory.sh
 
 CATEGORIES=( "phimle:2719c47fde33"
 			"phimbo:0a0636677396"
