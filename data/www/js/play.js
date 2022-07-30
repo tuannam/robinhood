@@ -1,6 +1,6 @@
 const playMovie = (url) => {
     console.log(`url = ${url}`);
-    if (url.includes("onedaysales")) {
+    if (url.includes("onedaysales") || url.includes("animeion")) {
         $.getJSON(`/cgi-bin/resolve.cgi?${url}`, function(resp) {  
             console.log(resp.url)
             let video = document.getElementById("player")
