@@ -78,6 +78,7 @@ const showMovies = (name, category, container, all = false) => {
   }); 
 };
 
+document.getElementById('play-area').hidden = true;
 let path = $(location).attr('search');
 if (path.startsWith('?phimle')) {
   category="phimle"
@@ -100,8 +101,8 @@ if (path.startsWith('?phimle')) {
   box.innerHTML = `<div class="details"></div>`
   document.addEventListener("DOMContentLoaded", loadMovie(code));
 } else if (path.startsWith('?play')) {
-  box = document.querySelector('.container')
-  box.innerHTML = `<div class="play-area"></div>`
+  document.getElementById('play-area').hidden = false;
+  // box.innerHTML = `<div class="play-area"></div>`
   let url = decodeURIComponent(path.substring(6));
   console.log(url);
   document.addEventListener("DOMContentLoaded", playMovie(url));

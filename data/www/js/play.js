@@ -2,11 +2,11 @@ const playMovie = (url) => {
     console.log(`url = ${url}`);
     $.getJSON(`/cgi-bin/resolve.cgi?${url}`, function(resp) {  
         console.log(resp.url)
-        let box = document.querySelector('.play-area')
-        box.innerHTML = `
-        <video controls width="100%">
-            <source src="${resp.url}" type="video/mp4">
-        </video>
-        `
+        let video = document.getElementById("player")
+        var source = document.createElement('source');
+        source.setAttribute('src', resp.url);
+        source.setAttribute('type', 'video/mp4');
+        video.appendChild(source);
+        video.play();
     }); 
 };
