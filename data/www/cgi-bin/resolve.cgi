@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 source ./config.sh
+source ./common.sh
 
 query=${QUERY_STRING}
 
-function urldecode() { : "${*//+/ }"; echo -e "${_//%/\\x}"; }
 url=$(urldecode ${query})
 
 echo 'Content-Type: application/json'

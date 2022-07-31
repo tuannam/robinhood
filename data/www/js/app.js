@@ -4,7 +4,7 @@ let busy = false
 box = document.querySelector('.container');
 
 
-function movideCard(code, title, image) {
+function movieCard(code, title, image) {
   return `<div class="movie">
     <div class="movie-image"> 
       <span class="play"><span class="name">${title}</span></span> 
@@ -29,7 +29,7 @@ const loadMore = () => {
         if (offset % 5 == 0) {
           output += `<div class="box">`
         } 
-        (output += movideCard(article_code, article_title, article_image))
+        (output += movieCard(article_code, article_title, article_image))
         offset = offset + 1;
         if (offset % 5 == 0) {
           output += `</div>`
@@ -62,7 +62,7 @@ const showMovies = (name, category, container, all = false) => {
         if (offset % 5 == 0) {
           output += `<div class="box">`
         }
-        (output += movideCard(article_code, article_title, article_image))
+        (output += movieCard(article_code, article_title, article_image))
         offset = offset + 1;       
         if (offset % 5 == 0) {
           output += `</div>`
@@ -101,11 +101,17 @@ if (path.startsWith('?phimle')) {
   box.innerHTML = `<div class="details"></div>`
   document.addEventListener("DOMContentLoaded", loadMovie(code));
 } else if (path.startsWith('?play')) {
+  $('#more-container').hide();
   document.getElementById('play-area').hidden = false;
-  // box.innerHTML = `<div class="play-area"></div>`
   let url = decodeURIComponent(path.substring(6));
   console.log(url);
   document.addEventListener("DOMContentLoaded", playMovie(url));
+} else if (path.startsWith('?keyword')) {  
+  $('#more-container').hide();
+  let keyword = path.substring(9);
+  box = document.querySelector('.container')
+  box.innerHTML = `<div class="phim-result"></div>`
+  document.addEventListener("DOMContentLoaded", searchMovies(keyword));  
 } else {
   $('#more-container').hide();
   document.addEventListener("DOMContentLoaded", showMovies('Phim Chiếu Rạp', 'phimchieurap', '.phim-chieu-rap'));
@@ -123,4 +129,8 @@ $(window).scroll(function() {
 
 $('#more-btn').click(function(e) {  
   loadMore();
+});
+
+$("input").focus(function() {
+  this.value = "";
 });
