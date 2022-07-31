@@ -1,6 +1,7 @@
 const loadMovie = (code) => {
     let box = document.querySelector('.details')
     $.getJSON(`/cgi-bin/details.cgi?${code}`, function(movies) {  
+        console.log(movies);
         let movie = movies[0];
         let titles = movie["article_title"].split('-');
         let chapters = ""
@@ -18,6 +19,11 @@ const loadMovie = (code) => {
             }
             chapter += `</span>`
         });
+        var content=decodeURIComponent(movie.article_content)
+        var contentDiv = document.createElement('div')
+        contentDiv.innerHTML = content
+        
+
         box.innerHTML = 
         `<table>
             <tr valign="top">
@@ -33,6 +39,7 @@ const loadMovie = (code) => {
                 </article>
                 </td>
             </tr>
+            <tr><td width="250">${contentDiv.firstChild.innerHTML}</td></tr>
             <tr>
                 <td>${chapters}</td>
             </tr>
