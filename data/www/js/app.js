@@ -96,6 +96,7 @@ if (path.startsWith('?phimle')) {
   box.innerHTML = `<div class="phim-chieu-rap"></div>`
   document.addEventListener("DOMContentLoaded", showMovies('Phim Chiếu Rạp', 'phimchieurap', '.phim-chieu-rap', true));
 } else if (path.startsWith('?details')) {
+  $('#more-container').hide();
   box = document.querySelector('.container')
   let code = path.substring(9);
   box.innerHTML = `<div class="details"></div>`
