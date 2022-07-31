@@ -44,6 +44,8 @@ const loadMovie = (code) => {
                 <td>${chapters}</td>
             </tr>
         </table>
+        <br>
+        <br>
         `
         }); 
     
