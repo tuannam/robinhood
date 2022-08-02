@@ -21,7 +21,7 @@
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="js/jquery-func.js"></script>
 <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
     <!-- <link rel="stylesheet" href="css/styles.css" /> -->
     <title>Robinhood</title>
   </head>
@@ -32,11 +32,11 @@
         <div id="navigation">
           <ul>
             <li><a class="active" href="/">HOME</a></li>
-            <!-- <li><a href="#">NEWS</a></li>
-            <li><a href="#">IN THEATERS</a></li>
-            <li><a href="#">COMING SOON</a></li>
-            <li><a href="#">CONTACT</a></li>
-            <li><a href="#">ADVERTISE</a></li> -->
+            <li>
+              <label for="cars">Select a site:</label>
+              <select name="sites" id="sites">
+              </select>
+            </li>
           </ul>
         </div>
         <div id="sub-navigation">
@@ -102,10 +102,12 @@
       </div>
     </div>
     
+    <script src="js/server.js"></script>
     <script src="js/chromecast.js"></script>
     <script src="js/search.js"></script>
     <script src="js/play.js?1"></script>
     <script src="js/details.js?3"></script>
-    <script src="js/app.js?18"></script>
+    <script src="js/app.js?23"></script>
+    <script src="js/site.js?2"></script>
   </body>
 </html>

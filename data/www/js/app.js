@@ -3,7 +3,6 @@ let offset = 0;
 let busy = false
 box = document.querySelector('.container');
 
-
 function movieCard(code, title, image) {
   return `<div class="movie">
     <div class="movie-image"> 
@@ -23,7 +22,7 @@ const loadMore = () => {
   let output = ""
 
   console.log(`offset = ${offset}`);
-  $.getJSON(`/cgi-bin/category.cgi?${category}/${offset}/15`, function(movies) {  
+  getJSON(`/cgi-bin/category.cgi?${category}/${offset}/15`, function(movies) {  
     movies.forEach(
       ({ article_code, article_title, article_image }) => {       
         if (offset % 5 == 0) {
@@ -56,7 +55,7 @@ const showMovies = (name, category, container, all = false) => {
   if (all) {
     limit = 15
   }
-  $.getJSON(`/cgi-bin/category.cgi?${category}/0/${limit}`, function(movies) {    
+  getJSON(`/cgi-bin/category.cgi?${category}/0/${limit}`, function(movies) {    
     movies.forEach(
       ({ article_code, article_title, article_image }) => {
         if (offset % 5 == 0) {
@@ -135,3 +134,4 @@ $('#more-btn').click(function(e) {
 $("input").focus(function() {
   this.value = "";
 });
+
