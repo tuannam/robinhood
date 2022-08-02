@@ -19,5 +19,4 @@ if [ ${#parts[@]} -ge 3 ]; then
 fi
 
 select_source
-
 movies_in_category ${category} ${offset} ${limit}

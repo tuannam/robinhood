@@ -1,6 +1,6 @@
 const searchMovies = (keyword) => {
     console.log(`keyword = ${keyword}`);
-    $.getJSON(`/cgi-bin/search.cgi?${keyword}`, function(movies) {  
+    getJSON(`/cgi-bin/search.cgi?${keyword}`, function(movies) {  
         console.log(movies);
 
         let output = `<div class="head">
