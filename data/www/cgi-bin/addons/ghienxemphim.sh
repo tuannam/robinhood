@@ -1,6 +1,7 @@
 #!/bin/bash
 
 BASE_URL="https://ghienxemphim.net/"
+USER_AGENT='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
 
 list_categories() {
     read -r -d '' categories <<- EOM
@@ -48,4 +49,40 @@ movies_in_category() {
 	fi
 
 	echo "${response}"
+}
+
+
+details() {
+    movie_id=$1
+    read -r -d '' PAYLOAD <<- EOM
+	    {"article_code":"$movie_id",
+		"filter_type":"extra",
+		"actionType":"getArticleDetail"
+	}
+	EOM
+		
+    response=$(curl "${BASE_URL}webapi/index" \
+    -H 'content-type: application/json' \
+    -H "user-agent: ${USER_AGENT}" \
+    --data-raw "${PAYLOAD}" \
+    --compressed -s)
+
+    echo "${response}"
+}
+
+search() {
+    $keyword=$1
+    read -r -d '' PAYLOAD <<- EOM
+	    {"q": "$keyword",
+		"limit": 9,
+		"actionType":"searchArticleByKeyword"}
+	EOM
+
+    response=$(curl "${BASE_URL}webapi/index" \
+    -H "referer: ${BASE_URL}" \
+    -H "user-agent: ${USER_AGENT}" \
+    --data-raw "${PAYLOAD}" \
+    --compressed)
+
+    echo "${response}"
 }

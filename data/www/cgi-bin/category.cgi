@@ -4,20 +4,18 @@ source ./common.sh
 
 echo 'Content-Type: application/json'
 
-
-query=${QUERY_STRING}
 query=${QUERY_STRING}
 parts=(${query//\// })
 category=${parts[0]}
 
 offset=0
-size=12
+limit=15
 if [ ${#parts[@]} -ge 2 ]; then
     offset=${parts[1]}
 fi
 
 if [ ${#parts[@]} -ge 3 ]; then
-    size=${parts[2]}
+    limit=${parts[2]}
 fi
 
 select_source

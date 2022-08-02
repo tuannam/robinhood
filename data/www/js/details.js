@@ -1,6 +1,7 @@
 const loadMovie = (code) => {
     let box = document.querySelector('.details')
-    $.getJSON(`/cgi-bin/details.cgi?${code}`, function(movies) {  
+    getJSON(`/cgi-bin/details.cgi?${code}`, function(movies) {  
+        console.log(movies);
         let movie = movies[0];
         let titles = movie["article_title"].split('-');
         let chapters = ""
