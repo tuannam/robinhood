@@ -3,8 +3,7 @@
 echo 'Content-Type: application/json'
 echo ''
 
-source ./common.sh
-
+source ./lib/common.sh
 list_addons
 
 echo -n "["
