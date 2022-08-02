@@ -5,5 +5,6 @@ source ./common.sh
 echo 'Content-Type: application/json'
 echo ''
 
-list_addons
 select_source
+
+list_categories

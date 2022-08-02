@@ -13,7 +13,9 @@ list_addons() {
     done
 }
 
-select_source() {    
+select_source() {
+    list_addons
+    
     if [ "$SOURCE" == "" ]; then
         SOURCE="${addons[0]}"
     fi

@@ -41,21 +41,23 @@ const loadMore = () => {
   }); 
 };
 
-const showMovies = (name, category, container, all = false) => {
+const showMovies = (category, container, all = false) => {
+  console.log(`showMovies = ${category}`);
   let box = document.querySelector(container)
-  let output = `<div class="head">
-                  <h2>${name}</h2>`
-      if (all) {
-        output += `<br/>`
-      } else {
-        output += `<p class="text-right"><a href="/?${category}">See all</a></p>`
-      } 
-      output += `</div>`
+  let output = ""
+  if (all) {
+   output += `<br/>`
+  } else {
+    output += `<p class="text-right"><a href="/?category/${category}">See all</a></p>`
+  } 
+  output += `</div>`
   let limit = 10
   if (all) {
     limit = 15
   }
+  console.log(`/cgi-bin/category.cgi?${category}/0/${limit}`);
   getJSON(`/cgi-bin/category.cgi?${category}/0/${limit}`, function(movies) {    
+    console.log(movies);
     movies.forEach(
       ({ article_code, article_title, article_image }) => {
         if (offset % 5 == 0) {
@@ -112,6 +114,11 @@ if (path.startsWith('?phimle')) {
   box = document.querySelector('.container')
   box.innerHTML = `<div class="phim-result"></div>`
   document.addEventListener("DOMContentLoaded", searchMovies(keyword));  
+} else if (path.startsWith('?category')) {
+  let category = path.substring(10);
+  box = document.querySelector('.container')
+  box.innerHTML = `<div class="category"></div>`
+  document.addEventListener("DOMContentLoaded", showMovies(category, '.category', true));
 } else {
   $('#more-container').hide();
   document.addEventListener("DOMContentLoaded", showMovies('Phim Chiếu Rạp', 'phimchieurap', '.phim-chieu-rap'));
