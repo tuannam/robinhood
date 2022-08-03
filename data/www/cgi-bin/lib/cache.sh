@@ -4,7 +4,12 @@ CACHE_FOLDER='../cache/'
 
 get_cache() {
     key=$1
-    cache_file="${CACHE_FOLDER}${key}"
+
+    if [ "$HTTP_X_MOVIE_SITE" == "" ]; then
+        HTTP_X_MOVIE_SITE="${addons[0]}"
+    fi
+
+    cache_file="${CACHE_FOLDER}${HTTP_X_MOVIE_SITE}/${key}"
     if [ -f "$cache_file" ]; then
         cat "$cache_file"        
     fi
@@ -13,7 +18,12 @@ get_cache() {
 set_cache() {
     key=$1
     data="$2"
-    cache_file="${CACHE_FOLDER}${key}"
+
+    if [ "$HTTP_X_MOVIE_SITE" == "" ]; then
+        HTTP_X_MOVIE_SITE="${addons[0]}"
+    fi
+
+    cache_file="${CACHE_FOLDER}${HTTP_X_MOVIE_SITE}/${key}"
     folder=$(dirname "${cache_file}")
     mkdir -p "${folder}"
     echo "$data" > "$cache_file"

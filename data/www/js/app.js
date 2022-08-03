@@ -13,23 +13,22 @@ function movieCard(code, title, image) {
   </div>`
 };
 
-const showMovies = (cat, container, all = false) => {
-  console.log(`showMovies = ${cat}`);
-  category = cat
-  box = document.querySelector(container)
-  let output = ""
+const showMovies = (categoryId, container, all = false, name = "") => {
+  console.log(`showMovies = ${categoryId}`);  
+  let output = "<div class='head'>"
   if (all) {
    output += `<br/>`
   } else {
-    output += `<p class="text-right"><a href="/?category/${cat}">See all</a></p>`
+    output += `<h2>${name}</h2>`
+    output += `<p class="text-right"><a href="/?category/${categoryId}">See all</a></p>`
   } 
   output += `</div>`
   let limit = 10
   if (all) {
     limit = 15
   }
-  console.log(`/cgi-bin/category.cgi?${cat}/0/${limit}`);
-  getJSON(`/cgi-bin/category.cgi?${cat}/0/${limit}`, function(movies) {    
+  console.log(`/cgi-bin/category.cgi?${categoryId}/0/${limit}`);
+  getJSON(`/cgi-bin/category.cgi?${categoryId}/0/${limit}`, function(movies) {    
     console.log(movies);
     movies.forEach(
       ({ article_code, article_title, article_image }) => {
@@ -41,14 +40,12 @@ const showMovies = (cat, container, all = false) => {
         if (offset % 5 == 0) {
           output += `</div>`
         }
-      }
-       
+      }       
     )
     if (!all) {
       output += `<div class="cl">&nbsp;</div>`
-    }
-    
-    box.innerHTML = output
+    }    
+    container.innerHTML += output
   }); 
 };
 
@@ -82,9 +79,21 @@ const loadMore = () => {
 };
 
 const loadHome = () => {
+  let mainContainer = document.querySelector('.container')
+  mainContainer.innerHTML = ""
   getJSON(`/cgi-bin/home.cgi`, function(resp) {    
     let categories = resp['categories'];
-    console.log(categories);       
+    var idx = 0
+    categories.forEach( 
+      ({name, id}) => {
+        console.log(`name = ${name}, id = ${id}`);
+        let categoryContainer = document.createElement('div')
+        // categoryContainer.classList.add('box')
+        mainContainer.append(categoryContainer)
+        showMovies(id, categoryContainer, false, name)
+        idx = idx + 1
+      }
+    )
   }); 
 };
 
@@ -109,10 +118,10 @@ if (path.startsWith('?details')) {
   box.innerHTML = `<div class="phim-result"></div>`
   document.addEventListener("DOMContentLoaded", searchMovies(keyword));  
 } else if (path.startsWith('?category')) {
-  let category = path.substring(10);
+  category = path.substring(10);
   box = document.querySelector('.container')
   box.innerHTML = `<div class="category"></div>`
-  document.addEventListener("DOMContentLoaded", showMovies(category, '.category', true));
+  document.addEventListener("DOMContentLoaded", showMovies(category, box, true));
 } else {
   $('#more-container').hide();
   document.addEventListener("DOMContentLoaded", loadHome());

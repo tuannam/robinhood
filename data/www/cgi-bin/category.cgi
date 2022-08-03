@@ -30,3 +30,6 @@ if [ "$cache_data" == "" ]; then
 fi
 
 echo "${cache_data}"
+
+
+# movies_in_category ${category} ${offset} ${limit}

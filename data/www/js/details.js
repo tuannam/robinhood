@@ -1,5 +1,6 @@
 const loadMovie = (code) => {
     let box = document.querySelector('.details')
+    console.log(`/cgi-bin/details.cgi?${code}`);
     getJSON(`/cgi-bin/details.cgi?${code}`, function(movies) {  
         console.log(movies);
         let movie = movies[0];
