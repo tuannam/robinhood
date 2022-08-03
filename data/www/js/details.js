@@ -25,7 +25,7 @@ const loadMovie = (code) => {
         contentDiv.innerHTML = content
         
         var html = contentDiv.firstChild.innerHTML
-        if (contentDiv.firstChild.firstChild.nodeName == "P") {
+        if (contentDiv.firstChild.firstChild && contentDiv.firstChild.firstChild.nodeName == "P") {
             html = contentDiv.firstChild.firstChild.innerHTML
         }
         box.innerHTML = 

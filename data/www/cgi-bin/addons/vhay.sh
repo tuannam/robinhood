@@ -51,3 +51,28 @@ movies_in_category() {
     done
     echo "]"    
 }
+
+
+details() {
+    url="${BASE_URL}phim/$1"
+    html=$(curl "${url}" \
+            -H "referer: ${BASE_URL}' \
+            -H user-agent: ${USER_AGENT}" \
+            --compressed -s)
+
+# echo "$html"
+    title=$(echo "$html" | xmllint --html -xpath "//h1[@class='Title']/text()" - 2>/dev/null)
+    subTitle=$(echo "$html" | xmllint --html -xpath "//h2[@class='SubTitle']/text()" - 2>/dev/null)
+    image=$(echo "$html" | xmllint --html -xpath "string(//figure/img/@src)" - 2>/dev/null)
+
+
+    read -r -d '' DATA <<- EOM
+		[{
+			"article_title": "${title} - ${subTitle}",
+			"article_image": "${image}",
+            "extra_info": []
+		}]
+	EOM
+
+    echo "$DATA"
+}
