@@ -81,7 +81,12 @@ const loadMore = () => {
   }); 
 };
 
-
+const loadHome = () => {
+  getJSON(`/cgi-bin/home.cgi`, function(resp) {    
+    let categories = resp['categories'];
+    console.log(categories);       
+  }); 
+};
 
 document.getElementById('play-area').hidden = true;
 let path = $(location).attr('search');
@@ -110,9 +115,7 @@ if (path.startsWith('?details')) {
   document.addEventListener("DOMContentLoaded", showMovies(category, '.category', true));
 } else {
   $('#more-container').hide();
-  document.addEventListener("DOMContentLoaded", showMovies('Phim Chiếu Rạp', 'phimchieurap', '.phim-chieu-rap'));
-  document.addEventListener("DOMContentLoaded", showMovies('Phim Lẻ', 'phimle', '.phim-le'));
-  document.addEventListener("DOMContentLoaded", showMovies('Phim Bộ', 'phimbo', '.phim-bo'));  
+  document.addEventListener("DOMContentLoaded", loadHome());
 }
 
 $(window).scroll(function() {

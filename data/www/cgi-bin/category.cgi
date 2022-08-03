@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 source ./lib/common.sh
+source ./lib/cache.sh
 
 echo 'Content-Type: application/json'
 
@@ -19,4 +20,13 @@ if [ ${#parts[@]} -ge 3 ]; then
 fi
 
 select_source
-movies_in_category ${category} ${offset} ${limit}
+
+cache_file="${category}/${offset}/${limit}.cache"
+cache_data=$(get_cache "$cache_file")
+
+if [ "$cache_data" == "" ]; then
+    cache_data=$(movies_in_category ${category} ${offset} ${limit})
+    set_cache "${cache_file}" "${cache_data}"
+fi
+
+echo "${cache_data}"

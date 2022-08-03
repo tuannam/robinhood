@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source ./common.sh
+source ./lib/common.sh
 
 echo 'Content-Type: application/json'
 
