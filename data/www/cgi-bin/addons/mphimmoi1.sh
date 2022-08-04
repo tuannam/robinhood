@@ -67,16 +67,60 @@ details() {
     subTitle=$(echo "$html" | xmllint --html -xpath "//h2[@class='real-name']/text()" - 2>/dev/null | cut -d '|' -f 2 | sed 's/ *$//g' | tr -d '\n')
     image=$(echo "$html" | xmllint --html -xpath "string(//div[@class='poster']/a/img/@src)" - 2>/dev/null)
     content=$(echo "$html" | xmllint --html -xpath "//div[@class='film-content']/p/text()" - 2>/dev/null)
+    full_link=$(echo "$html" | xmllint --html -xpath "string(//a[i[@class='fa fa-play']]/@href)" - 2>/dev/null)
     # escaped_content=$(echo -n "<div>${content}</div>" | jq -Rsa . )
+
+    html=$(curl ${full_link} \
+            -H "referer: ${BASE_URL}" \
+            -H "user-agent: ${USER_AGENT}" \
+            --compressed -s)
+
+    count=$(echo "${html}" | xmllint --html -xpath "count(//ul[@class='list-episode']/li)" - 2>/dev/null)
+    idx=1
+    extra_info="["
+    while [ $idx -le $count ]; do
+        item=$(echo "${html}" | xmllint --html -xpath "//ul[@class='list-episode']/li[$idx]" - 2>/dev/null)
+        chapter_link=$(echo "$item" | xmllint --html -xpath "string(//a/@href)" - | xargs basename)
+        chapter=$(echo "$item" | xmllint --html -xpath "//a/text()" -)
+
+        if [ $idx -gt 1 ]; then
+            extra_info="${extra_info}, "        
+        fi
+        extra_info="${extra_info}{ \"name\": \"Tap ${chapter}\", \"link\": \"resolver-${chapter_link}\" }"
+
+        idx=$((idx+1))
+    done
+    extra_info="${extra_info}]"
 
     read -r -d '' DATA <<- EOM
 		[{
 			"article_title": "${title} - ${subTitle}",
 			"article_image": "${image}",
             "article_content": "<div>${content}</div>",
-            "extra_info": []
+            "extra_info": ${extra_info}
 		}]
 	EOM
 
     echo "$DATA" 
+}
+
+resolve() {
+    query="$1"
+    url="${BASE_URL}${query:9}"
+
+    html=$(curl "$url" \
+        -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36' \
+        --compressed -s)
+    episodeID=$(echo "${html}" | grep "var episodeID =" | sed 's/.*parseInt(//' | sed 's/).*//')
+    filmID=$(echo "${html}" | grep "filmID = parseInt" | sed 's/.*parseInt(//' | sed 's/).*//')
+    svID=$(echo "${html}" | grep "var svID =" | sed 's/.*parseInt(//' | sed 's/).*//')
+
+    html=$(curl "${BASE_URL}ajax/player" \
+            -H "referer: ${BASE_URL}" \
+            -H "user-agent: ${USER_AGENT}" \
+            --data-raw "id=${filmID}&ep=${episodeID}&server=${svID}" \
+            --compressed -s)
+
+    url=$(echo "$html" | grep "sources: " | sed 's/.*file: \"//' | sed 's/\".*//')
+    echo "{\"url\": \"${url}\", \"type\": \"application/x-mpegURL\"}"
 }
