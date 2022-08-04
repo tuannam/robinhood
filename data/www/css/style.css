@@ -394,86 +394,27 @@ h1#logo a {
 	float:right;
 }
 
+[aria-hidden="true"] {
+display: none;
+}
 
-.u-visually-hidden {
-	border: 0;
-	clip: rect(0, 0, 0, 0);
-	height: 1px;
-	margin: -1px;
-	overflow: hidden;
-	padding: 0;
-	position: absolute;
-	white-space: nowrap;
-	width: 1px;
-	/* 1 */
-  }
-  
-  .c-video__container {
-	position: relative;
-	width: 500px;
-	margin: 0 auto;
-  }
-  
-  .c-video {
-	display: block;
-	width: 100%;
-	height: auto;
-  }
-  
-  .c-video__button {
-	padding: 0;
-	border: none;
-	outline: none;
-	font: inherit;
-	color: #FFF;
-	background: none;
-	z-index: 100;
-	cursor: pointer;
-  }
-  .c-video__button svg {
-	pointer-events: none;
-  }
-  
-  .c-video__button--cast {
-	position: absolute;
-	top: 1rem; 
-	right: 1rem;
-  }
-  
-  .c-video__casting-controls {
-	display: flex;
-	justify-content: center;
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	top: 0;
-	height: 100%;
-	width: 100%;
-	background-color: rgba(0,0,0,.7);
-  }
-  
-  [aria-hidden="true"] {
-	display: none;
-  }
-
-  .btn-container {
+.btn-container {
 	justify-content: space-between;
 	flex-direction: column;
 	height: 100vh;
 	display: flex;
-  }
-  .btn-container .btn-holder {
+}
+.btn-container .btn-holder {
 	justify-content: flex-start;
 	display: flex;
-  }
+}
 
-  .btn-container .btn-holder {
+.btn-container .btn-holder {
 	justify-content: flex-start;
-	display: flex;
-  }
+display: flex;
+}
 
-  .btn-container .btn-holder .more {
+.btn-container .btn-holder .more {
 	font-weight:bold;
 	color:hwb(44 6% 5%);
 	font-size:18px;
