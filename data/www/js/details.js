@@ -31,7 +31,7 @@ const loadMovie = (code) => {
         box.innerHTML = 
         `<table>
             <tr valign="top">
-                <td><img src="${movie["article_image"]}" alt="" /></td>
+                <td><img src="${movie["article_image"]}" alt="" width="300px"/></td>
             </tr>
             <tr valign="top">
                 <td>

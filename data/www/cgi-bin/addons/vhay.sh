@@ -31,9 +31,10 @@ movies_in_category() {
     -H "user-agent: ${USER_AGENT}" \
     --compressed -s)
 
-    count=$(echo "${html}" | xmllint --html -xpath 'count(//li[@class="TPostMv"])' - 2>/dev/null)
+    count=$(echo "${html}" | 
+    )
     idx=1
-    echo -e "\n["
+    echo -e "["
     while [ $idx -le $count ]; do
         item=$(echo "${html}" | xmllint --html -xpath "//li[$idx][@class='TPostMv']" - 2>/dev/null)
         title=$(echo "$item" | xmllint --html -xpath "string(//h2)" - 2>/dev/null)

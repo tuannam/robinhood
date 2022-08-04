@@ -1,8 +1,13 @@
 #!/bin/bash
 
 CACHE_FOLDER='../cache/'
+cache=1
 
-get_cache() {
+get_cache() {    
+    if [ $cache -eq 0 ]; then
+        return
+    fi
+
     key=$1
 
     if [ "$HTTP_X_MOVIE_SITE" == "" ]; then

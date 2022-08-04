@@ -90,20 +90,20 @@ search() {
 resolve() {
     url="$1"
     if [[ "$url" == *"ok.ru"* ]]; then
-    response=$(curl "$url" \
-    -H 'authority: ok.ru' \
-    -H "user-agent: ${USER_AGENT}" \
-    --compressed -s  
-    )
-    resolved=$(echo "$response" | grep "data-options=" | sed 's/.*data-options=\"//' | sed 's/\".*//' | sed 's/.*u003Ehttps:/https:/g' | sed 's/\\\\u0026/\&/g' | sed 's/\&amp;/\&/g' | sed 's/\\\\.*//g')
-    echo -e "\n{\"url\": \"${resolved}\"}"
-    else
-    response=$(curl "$url" \
-        -H "referer: ${BASE_URL}" \
+        response=$(curl "$url" \
+        -H 'authority: ok.ru' \
         -H "user-agent: ${USER_AGENT}" \
-        --compressed -s
+        --compressed -s  
         )
-    resolved=$(echo "$response" | grep "controls src" | sed -e 's/.*controls src=\"//g' | sed -e 's/\".*//')
-    echo -e "\n{\"url\": \"${resolved}\"}"
+        resolved=$(echo "$response" | grep "data-options=" | sed 's/.*data-options=\"//' | sed 's/\".*//' | sed 's/.*u003Ehttps:/https:/g' | sed 's/\\\\u0026/\&/g' | sed 's/\&amp;/\&/g' | sed 's/\\\\.*//g')
+        echo -e "\n{\"url\": \"${resolved}\"}"
+    else
+        response=$(curl "$url" \
+            -H "referer: ${BASE_URL}" \
+            -H "user-agent: ${USER_AGENT}" \
+            --compressed -s
+            )
+        resolved=$(echo "$response" | grep "controls src" | sed -e 's/.*controls src=\"//g' | sed -e 's/\".*//')
+        echo -e "\n{\"url\": \"${resolved}\"}"
     fi
 }
