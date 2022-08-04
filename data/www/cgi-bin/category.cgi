@@ -26,10 +26,10 @@ cache_data=$(get_cache "$cache_file")
 
 if [ "$cache_data" == "" ]; then
     cache_data=$(movies_in_category ${category} ${offset} ${limit})
-    set_cache "${cache_file}" "${cache_data}"
+    
+    if [ ${#cache_data} -lt 5 ]; then
+        set_cache "${cache_file}" "${cache_data}"
+    fi
 fi
 
 echo "${cache_data}"
-
-
-# movies_in_category ${category} ${offset} ${limit}

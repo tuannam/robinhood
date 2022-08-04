@@ -64,15 +64,17 @@ details() {
     title=$(echo "$html" | xmllint --html -xpath "//h1[@class='Title']/text()" - 2>/dev/null)
     subTitle=$(echo "$html" | xmllint --html -xpath "//h2[@class='SubTitle']/text()" - 2>/dev/null)
     image=$(echo "$html" | xmllint --html -xpath "string(//figure/img/@src)" - 2>/dev/null)
-
+    content=$(echo "$html" | xmllint --html -xpath "//header/div[@class='Description']/text()" - 2>/dev/null)
+    escaped_content=$(echo -n "<div>${content}</div>" | jq -Rsa . )
 
     read -r -d '' DATA <<- EOM
 		[{
 			"article_title": "${title} - ${subTitle}",
 			"article_image": "${image}",
+            "article_content": ${escaped_content},
             "extra_info": []
 		}]
 	EOM
 
-    echo "$DATA"
+    echo "$DATA" 
 }
