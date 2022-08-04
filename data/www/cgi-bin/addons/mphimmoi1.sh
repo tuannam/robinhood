@@ -104,6 +104,33 @@ details() {
     echo "$DATA" 
 }
 
+search() {
+    keyword="$1"
+    html=$(curl "${BASE_URL}ajax/search/" \
+    -H "referer: ${BASE_URL}" \
+    --data-raw "keyword=${keyword}" \
+    --compressed -s | jq -r '.content')
+    count=$(echo "$html" | xmllint --html -xpath "count(//ul/li[@class='film'])" -)
+    idx=1
+    echo "["
+    while [ $idx -le $count ]; do
+        item=$(echo "$html" | xmllint --html -xpath "//ul/li[@class='film'][$idx]" -)
+        image=$(echo "$item" | xmllint --html -xpath "string(//img/@src)" -)
+        link=$(echo "$item" | xmllint --html -xpath "string(//a/@href)" - | xargs basename)
+        name=$(echo "$item" | xmllint --html -xpath "//a/span/text()" - | sed 's/ //g')
+        if [ $idx -gt 1 ]; then
+            echo ", "
+        fi
+        echo -n "{"
+        echo "\"article_code\": \"${link%.*}\"",
+        echo "\"article_image\": \"${image}\"",
+        echo "\"article_title\": \"${name}\""
+        echo -n "}"
+        idx=$((idx+1))
+    done
+    echo "]"
+}
+
 resolve() {
     query="$1"
     url="${BASE_URL}${query:9}"
