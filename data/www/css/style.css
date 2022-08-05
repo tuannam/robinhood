@@ -469,6 +469,8 @@ Chromecast
 	position: absolute;
 	top: 1rem; 
 	right: 1rem;
+	margin-right: 10px;
+	margin-top: -10px;
   }
   
   .c-video__casting-controls {

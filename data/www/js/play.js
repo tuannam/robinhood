@@ -6,14 +6,12 @@ const playMovie = (url) => {
         console.log(`/cgi-bin/resolve.cgi?${encodeURIComponent(url)}`);
         getJSON(`/cgi-bin/resolve.cgi?${encodeURIComponent(url)}`, function(resp) {  
             videoSrc = resp.url;
-
-            console.log(resp.url)
-            let video = document.getElementById("player")
-            var source = document.createElement('source');
-            source.setAttribute('src', resp.url);
-            source.setAttribute('type', 'video/mp4');
-            video.appendChild(source);
-            video.play();
+            console.log(resp)
+            jwplayer("player").setup({ 
+                "playlist": [{
+                    "file": `${resp.url}`
+                }]
+            });
         });     
     } else {
         console.log('there');
