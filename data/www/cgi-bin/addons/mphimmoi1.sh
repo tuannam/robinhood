@@ -150,5 +150,5 @@ resolve() {
             --compressed -s)
 
     url=$(echo "$html" | grep "sources: " | sed 's/.*file: \"//' | sed 's/\".*//')
-    echo "{\"url\": \"${url}\", \"type\": \"application/x-mpegURL\"}"
+    echo "{\"url\": \"${url}\", \"type\": \"application/x-mpegURL\", \"player\": \"jwplayer\" }"
 }

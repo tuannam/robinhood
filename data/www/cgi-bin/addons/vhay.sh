@@ -141,5 +141,5 @@ resolve() {
                 )
     resolved=$(echo "$response" | grep "data-options=" | sed 's/.*data-options=\"//' | sed 's/\".*//' | sed 's/.*u003Ehttps:/https:/g' | sed 's/\\\\u0026/\&/g' | sed 's/\&amp;/\&/g' | sed 's/\\\\.*//g')
 
-    echo "{\"url\": \"${resolved}\", \"type\": \"video/mp4\"}"
+    echo "{\"url\": \"${resolved}\", \"type\": \"video/mp4\", \"player\": \"proxy\"}"
 }
