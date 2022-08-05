@@ -8,16 +8,16 @@ echo ''
 
 query=${QUERY_STRING}
 parts=(${query//\// })
-category=${parts[0]}
+category="${parts[0]}/${parts[1]}"
 
 offset=0
 limit=15
-if [ ${#parts[@]} -ge 2 ]; then
-    offset=${parts[1]}
+if [ ${#parts[@]} -ge 3 ]; then
+    offset=${parts[2]}
 fi
 
-if [ ${#parts[@]} -ge 3 ]; then
-    limit=${parts[2]}
+if [ ${#parts[@]} -ge 4 ]; then
+    limit=${parts[3]}
 fi
 
 select_source

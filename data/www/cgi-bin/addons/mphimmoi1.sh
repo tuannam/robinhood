@@ -7,10 +7,11 @@ list_categories() {
     read -r -d '' categories <<- EOM
     { 
         "categories": [
-            { "name": "Phim Mới", "id": "phim-moi"},
-            { "name": "Phim chiếu rạp", "id": "phim-chieu-rap"},
-            { "name": "Phim Lẻ", "id": "phim-le"},
-            { "name": "Phim Bộ", "id": "phim-bo"}            
+            { "name": "Phim Mới", "id": "danh-sach/phim-moi"},
+            { "name": "Phim chiếu rạp", "id": "danh-sach/phim-chieu-rap"},
+            { "name": "Phim Lẻ", "id": "danh-sach/phim-le"},
+            { "name": "Phim Bộ", "id": "danh-sach/phim-bo"},
+            { "name": "Netflix", "id": "the-loai/netflix"}
         ]
     }
 EOM
@@ -18,10 +19,10 @@ EOM
 }
 
 movies_in_category() {
-    url="${BASE_URL}danh-sach/$1.html"
+    url="${BASE_URL}$1.html"
     if [ $offset -gt 0 ]; then
         page=$((offset/15 + 1))
-        url="${BASE_URL}danh-sach/$1/trang-${page}.html"
+        url="${BASE_URL}$1/trang-${page}.html"
     fi
 
     html=$(curl "${url}" \
