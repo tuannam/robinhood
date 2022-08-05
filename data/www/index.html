@@ -20,12 +20,12 @@
   <link rel="stylesheet" href="css/style.css?2" type="text/css" media="all" />
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="js/jquery-func.js"></script>
-<!-- <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script> -->
+<script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
 
 <!-- <link href="//vjs.zencdn.net/7.10.2/video-js.min.css" rel="stylesheet">
 <script src="//vjs.zencdn.net/7.10.2/video.min.js"></script> -->
-<script src="https://cdn.jwplayer.com/libraries/2vQP28Pg.js"></script>
+<!-- <script src="https://cdn.jwplayer.com/libraries/2vQP28Pg.js"></script> -->
 
 <title>Robinhood</title>
   </head>
@@ -57,10 +57,38 @@
       </div>
       <div id="main">
         <div id="content" class="container">
-          <div class="play-area" id="play-area">
-            <div id="player"></div>                        
+          <div class="c-video__container js-video play-area" id="play-area">
+            <video controls class="c-video" id="player" width="480px">
+                <source src="" type='video/mp4' class="js-video" />
+            </video>
+            <button type="button" class="c-video__button c-video__button--cast js-cast">
+                <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 6 6 C 4.897 6 4 6.897 4 8 L 4 12 L 6 12 L 6 8 L 26 8 L 26 24 L 18 24 L 18 26 L 26 26 C 27.103 26 28 25.103 28 24 L 28 8 C 28 6.897 27.103 6 26 6 L 6 6 z M 4 14 L 4 16 C 9.169375 16 13.436179 19.942273 13.949219 24.978516 C 13.983421 25.314265 14 25.655375 14 26 L 16 26 C 16 19.383 10.617 14 4 14 z M 4 18 L 4 20 C 7.309 20 10 22.691 10 26 L 12 26 C 12 21.589 8.411 18 4 18 z M 4 22 L 4 26 L 8 26 C 8 23.791 6.209 22 4 22 z" fill="currentColor"/>
+                </svg>
+            <span class="u-visually-hidden">Cast on Chromecast</span>
+            </button>
+            <div class="c-video__casting-controls js-casting-controls" aria-hidden="true">
+            <button type="button" class="c-video__button js-play">
+                <svg  width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 4l20 12-20 12z" fill="currentColor"></path>
+                </svg>
+                <span class="u-visually-hidden">Play video</span>
+            </button>
+            <button type="button" class="c-video__button js-pause">
+                <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 4h10v24h-10zM18 4h10v24h-10z" fill="currentColor"></path>
+                </svg>
+                <span class="u-visually-hidden">Pause video</span>
+            </button>
+            <button type="button" class="c-video__button js-stop">
+                <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 4h24v24h-24z" fill="currentColor"></path>
+                </svg>
+                <span class="u-visually-hidden">Stop casting video</span>
+            </button>
+            </div>
         </div>
-      </div>                  
+      </div>              
     </div>
 
     <div class="btn-container" id="more-container">
@@ -68,10 +96,10 @@
         <span class="more" id="more-btn">Load more</span>
       </div>
     </div>
-    <!-- <script src="js/chromecast.js"></script> -->
+    <script src="js/chromecast.js"></script>
     <script src="js/server.js"></script>
     <script src="js/details.js?7"></script>
-    <script src="js/play.js?2"></script>
+    <script src="js/play.js?3"></script>
     <script src="js/search.js"></script>
     <script src="js/app.js?28"></script>
 
