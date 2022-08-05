@@ -7,9 +7,9 @@ list_categories() {
     read -r -d '' categories <<- EOM
     { 
         "categories": [
-            { "name": "Phim Chiếu Rạp", "id": "4d5b4c6a5792"},
-            { "name": "Phim Lẻ", "id": "2719c47fde33"},
-            { "name": "Phim Bộ", "id": "0a0636677396"}
+            { "name": "Phim Chiếu Rạp", "id": "4d5b4c6a5792/0"},
+            { "name": "Phim Lẻ", "id": "2719c47fde33/0"},
+            { "name": "Phim Bộ", "id": "0a0636677396/0"}
         ]
     }
 EOM
@@ -20,6 +20,9 @@ movies_in_category() {
     offset=0
 	limit=10
 
+    category_id="$1"
+    parts=(${category_id//\// })
+
 	if [ $# -ge 2 ]; then
 		offset=$2
 	fi
@@ -29,24 +32,22 @@ movies_in_category() {
 
 	read -r -d '' DATA <<- EOM
 		{
-			"filter":"$1",
+			"filter":"${parts[0]}",
 			"offset":$offset,
 			"limit":$limit,
 			"actionType":"getRelatedArticles"
 		}
 	EOM
-
-	response=$(curl "${BASE_URL}webapi/index" \
+    url="${BASE_URL}webapi/index"
+	response=$(curl "$url" \
 		-H 'content-type: application/json' \
-		-H "origin: ${BASE_URL}" \
-		-H "referer: ${BASE_URL}category?id=$1" \
 		-H "user-agent: ${USER_AGENT}" \
 		--data-raw "${DATA}" \
 		--compressed -s)
 		
-	if [ ${#response} -lt 10 ]; then
-		break
-	fi
+	# if [ ${#response} -lt 10 ]; then
+	# 	break
+	# fi
 
 	echo "${response}"
 }
