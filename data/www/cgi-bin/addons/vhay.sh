@@ -7,9 +7,9 @@ list_categories() {
     read -r -d '' categories <<- EOM
     { 
         "categories": [
-            { "name": "Phim Lẻ", "id": "phim-le"},
-            { "name": "Phim Bộ", "id": "phim-bo"},
-            { "name": "Phim Thuyết Minh", "id": "phim-thuyet-minh"}
+            { "name": "Phim Lẻ", "id": "phim-le/0"},
+            { "name": "Phim Bộ", "id": "phim-bo/0"},
+            { "name": "Phim Thuyết Minh", "id": "phim-thuyet-minh/0"}
         ]
     }
 EOM
@@ -18,8 +18,10 @@ EOM
 
 movies_in_category() {
     category_id="$1"
+    parts=(${category_id//\// })
+
     offset=$2
-    url="${BASE_URL}${category_id}/"
+    url="${BASE_URL}${parts[0]}/"
 
     if [ $offset -gt 0 ]; then
         page=$((offset/25 + 1))
@@ -31,12 +33,11 @@ movies_in_category() {
     -H "user-agent: ${USER_AGENT}" \
     --compressed -s)
 
-    count=$(echo "${html}" | 
-    )
+    count=$(echo "${html}" | xmllint --html -xpath "count(//li[@class='TPostMv'])" - 2>/dev/null)
     idx=1
     echo -e "["
     while [ $idx -le $count ]; do
-        item=$(echo "${html}" | xmllint --html -xpath "//li[$idx][@class='TPostMv']" - 2>/dev/null)
+        item=$(echo "${html}" | xmllint --html -xpath "//li[@class='TPostMv'][$idx]" - 2>/dev/null)
         title=$(echo "$item" | xmllint --html -xpath "string(//h2)" - 2>/dev/null)
         image=$(echo "$item" | xmllint --html -xpath "string(//img/@src)" - 2>/dev/null)
         code=$(echo "$item" | xmllint --html -xpath "string(//a/@href)" - 2>/dev/null | cut -c 23-)

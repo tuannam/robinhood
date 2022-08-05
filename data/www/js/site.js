@@ -11,5 +11,5 @@ getJSON(`/cgi-bin/site.cgi`, function(sites) {
 
 $('#sites').change(function() {    
     Cookies.set("site", this.value);
-    location.reload();
+    window.location.href = "/";
 });

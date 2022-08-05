@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CACHE_FOLDER='../cache/'
-cache=1
+cache=0
 
 get_cache() {    
     if [ $cache -eq 0 ]; then
