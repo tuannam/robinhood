@@ -11,16 +11,9 @@ const playMovie = (url) => {
     if (url.startsWith("resolver-") || url.includes("onedaysales") || url.includes("animeion") || url.includes("ok.ru")) {
         console.log(`/cgi-bin/resolve.cgi?${encodeURIComponent(url)}`);
         getJSON(`/cgi-bin/resolve.cgi?${encodeURIComponent(url)}`, function(resp) {  
-            if (resp.player == 'proxy') {
-                var getUrl = window.location;
-                var baseUrl = getUrl .protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
-                videoSrc = `${baseUrl}cgi-bin/proxy.cgi?${encodeURIComponent(resp.url)}`;
-            } else {
-                videoSrc = resp.url;
-            }
-            
             console.log(resp)
-
+            videoSrc = resp.url;            
+            
             if (resp.player == 'jwplayer') {
                 jwplayer("player").setup({ 
                     "playlist": [{
