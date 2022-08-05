@@ -92,7 +92,7 @@ details() {
                  extra_info="${extra_info}, "
             fi
             chapter=$(echo -en "${serverName} - Tập ${name}")
-            extra_info="${extra_info}{ \"name\": \"${chapter}\", \"link\": \"resolver-$1${link}\" }"
+            extra_info="${extra_info}{ \"name\": \"${chapter}\", \"link\": \"resolver-$1/${link}\" }"
 
             chapterIdx=$((chapterIdx+1))
         done
@@ -142,4 +142,35 @@ resolve() {
     resolved=$(echo "$response" | grep "data-options=" | sed 's/.*data-options=\"//' | sed 's/\".*//' | sed 's/.*u003Ehttps:/https:/g' | sed 's/\\\\u0026/\&/g' | sed 's/\&amp;/\&/g' | sed 's/\\\\.*//g')
 
     echo "{\"url\": \"${resolved}\", \"type\": \"video/mp4\", \"player\": \"proxy\"}"
+}
+
+search() {
+    keyword="$1"
+    html=$(curl "https://vhay.net/tim-kiem/${keyword}/" \
+        -H "referer: ${BASE_URL}" \
+        -H "user-agent: ${USER_AGENT}" \
+        --compressed -s)
+
+    count=$(echo "$html" | xmllint --html -xpath "count(//ul[starts-with(@class, 'MovieList')]/li[@class='TPostMv'])" - 2>/dev/null)
+    idx=1
+    echo "["
+    while [ $idx -le $count ]; do        
+        item=$(echo "$html" | xmllint --html -xpath "//ul[starts-with(@class, 'MovieList')]/li[@class='TPostMv'][$idx]" - 2>/dev/null)
+        link=$(echo "$item" | xmllint --html -xpath "string(//a/@href)" - 2>/dev/null | xargs basename)
+        # name=$(echo "$item" | xmllint --html -xpath "string(//h2/text())" - 2>/dev/null)
+        image=$(echo "$item" | xmllint --html -xpath "string(//img/@src)" - 2>/dev/null)
+        name=$(echo "$item" | xmllint --html -xpath "string(//img/@alt)" - 2>/dev/null)
+
+        if [ $idx -gt 1 ]; then
+            echo ", "
+        fi
+        echo -n "{"
+        echo "\"article_code\": \"${link}\"",
+        echo "\"article_image\": \"${image}\"",
+        echo "\"article_title\": \"${name}\""
+        echo -n "}"
+
+        idx=$((idx+1))
+    done
+    echo "]"
 }
