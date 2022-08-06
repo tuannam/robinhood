@@ -113,37 +113,6 @@ details() {
     echo "$DATA" 
 }
 
-resolve() {
-    query="$1"
-    url="${BASE_URL}phim/${query:9}"
-
-    html=$(curl "$url" \
-        -H "referer: ${BASE_URL}" \
-        -H "user-agent: ${USER_AGENT}" \
-        --compressed -s)
-
-    episodeID=$(echo "${html}" | grep "filmInfo.episodeID =" | cut -d"'" -f2)
-    filmID=$(echo "${html}" | grep "filmInfo.filmID =" | cut -d"'" -f2)
-    playTech=$(echo "${html}" | grep "filmInfo.playTech =" | cut -d"'" -f2)
-    
-    html=$(curl 'https://vhay.net/ajax' \
-            -H "referer: ${BASE_URL}" \
-            -H "user-agent: ${USER_AGENT}" \
-            --data-raw "NextEpisode=1&EpisodeID=${episodeID}&filmID=${filmID}&playTech=${playTech}" \
-            --compressed -s )
-
-    url=$(echo "$html" | sed 's/.*<iframe//' | sed "s/.*src='//" | sed 's/.*src="//' | sed "s/'.*//" | sed 's/".*//')
-
-    response=$(curl "$url" \
-                -H 'authority: ok.ru' \
-                -H "user-agent: ${USER_AGENT}" \
-                --compressed -s  
-                )
-    resolved=$(echo "$response" | grep "data-options=" | sed 's/.*data-options=\"//' | sed 's/\".*//' | sed 's/.*u003Ehttps:/https:/g' | sed 's/\\\\u0026/\&/g' | sed 's/\&amp;/\&/g' | sed 's/\\\\.*//g')
-
-    echo "{\"url\": \"${resolved}\", \"type\": \"video/mp4\", \"player\": \"proxy\"}"
-}
-
 search() {
     keyword="$1"
     html=$(curl "https://vhay.net/tim-kiem/${keyword}/" \
@@ -174,3 +143,36 @@ search() {
     done
     echo "]"
 }
+
+resolve() {
+    query="$1"
+    url="${BASE_URL}phim/${query:9}"
+
+    html=$(curl "$url" \
+        -H "referer: ${BASE_URL}" \
+        -H "user-agent: ${USER_AGENT}" \
+        --compressed -s)
+
+    episodeID=$(echo "${html}" | grep "filmInfo.episodeID =" | cut -d"'" -f2)
+    filmID=$(echo "${html}" | grep "filmInfo.filmID =" | cut -d"'" -f2)
+    playTech=$(echo "${html}" | grep "filmInfo.playTech =" | cut -d"'" -f2)
+    
+    html=$(curl 'https://vhay.net/ajax' \
+            -H "referer: ${BASE_URL}" \
+            -H "user-agent: ${USER_AGENT}" \
+            --data-raw "NextEpisode=1&EpisodeID=${episodeID}&filmID=${filmID}&playTech=${playTech}" \
+            --compressed -s )
+
+    url=$(echo "$html" | sed 's/.*<iframe//' | sed "s/.*src='//" | sed 's/.*src="//' | sed "s/'.*//" | sed 's/".*//')
+    echo "{\"url\": \"${url}\", \"type\": \"video/mp4\", \"player\": \"ok.ru\"}"
+
+    # response=$(curl "$url" \
+    #             -H 'authority: ok.ru' \
+    #             -H "user-agent: ${USER_AGENT}" \
+    #             --compressed -s  
+    #             )
+    # resolved=$(echo "$response" | grep "data-options=" | sed 's/.*data-options=\"//' | sed 's/\".*//' | sed 's/.*u003Ehttps:/https:/g' | sed 's/\\\\u0026/\&/g' | sed 's/\&amp;/\&/g' | sed 's/\\\\.*//g')
+
+    # echo "{\"url\": \"${resolved}\", \"type\": \"video/mp4\", \"player\": \"ok.ru\"}"
+}
+

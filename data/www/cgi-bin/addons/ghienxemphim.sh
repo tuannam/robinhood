@@ -91,13 +91,13 @@ search() {
 resolve() {
     url="$1"
     if [[ "$url" == *"ok.ru"* ]]; then
-        response=$(curl "$url" \
-        -H 'authority: ok.ru' \
-        -H "user-agent: ${USER_AGENT}" \
-        --compressed -s  
-        )
-        resolved=$(echo "$response" | grep "data-options=" | sed 's/.*data-options=\"//' | sed 's/\".*//' | sed 's/.*u003Ehttps:/https:/g' | sed 's/\\\\u0026/\&/g' | sed 's/\&amp;/\&/g' | sed 's/\\\\.*//g')
-        echo -e "\n{\"url\": \"${resolved}\"}"
+        # response=$(curl "$url" \
+        # -H 'authority: ok.ru' \
+        # -H "user-agent: ${USER_AGENT}" \
+        # --compressed -s  
+        # )
+        # resolved=$(echo "$response" | grep "data-options=" | sed 's/.*data-options=\"//' | sed 's/\".*//' | sed 's/.*u003Ehttps:/https:/g' | sed 's/\\\\u0026/\&/g' | sed 's/\&amp;/\&/g' | sed 's/\\\\.*//g')
+        echo -e "\n{\"url\": \"${url}\", \"type\": \"video/mp4\", \"player\": \"ok.ru\"}"
     else
         response=$(curl "$url" \
             -H "referer: ${BASE_URL}" \
