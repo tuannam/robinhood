@@ -16,7 +16,7 @@ const playMovie = (url) => {
             //     });    
             // } else 
             if (resp.player == 'ok.ru') {
-                document.getElementById('cast-button').hidden = true
+                // document.getElementById('cast-button').hidden = true
                 let div = document.getElementById('player')
                 let iframe = document.createElement('iframe')
                 if (window.screen.width > 600) {
