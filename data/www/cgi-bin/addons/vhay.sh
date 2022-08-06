@@ -92,7 +92,7 @@ details() {
                  extra_info="${extra_info}, "
             fi
             chapter=$(echo -en "${serverName} - Tập ${name}")
-            extra_info="${extra_info}{ \"name\": \"${chapter}\", \"link\": \"resolver-$1/${link}\" }"
+            extra_info="${extra_info}{ \"name\": \"${chapter}\", \"link\": \"resolver-$1${link}\" }"
 
             chapterIdx=$((chapterIdx+1))
         done
