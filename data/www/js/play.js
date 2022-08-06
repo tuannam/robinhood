@@ -8,13 +8,14 @@ const playMovie = (url) => {
             console.log(resp)
             videoSrc = resp.url;            
             
-            if (resp.player == 'jwplayer') {
-                jwplayer("player").setup({ 
-                    "playlist": [{
-                        "file": `${resp.url}`
-                    }]
-                });    
-            } else if (resp.player == 'ok.ru') {
+            // if (resp.player == 'jwplayer') {
+            //     jwplayer("player").setup({ 
+            //         "playlist": [{
+            //             "file": `${resp.url}`
+            //         }]
+            //     });    
+            // } else 
+            if (resp.player == 'ok.ru') {
                 document.getElementById('cast-button').hidden = true
                 let div = document.getElementById('player')
                 let iframe = document.createElement('iframe')
@@ -30,17 +31,23 @@ const playMovie = (url) => {
                 iframe.setAttribute('src', resp.url)
                 div.append(iframe)
             } else {
-                let div = document.getElementById('player')
-                let video = document.createElement('video');
-                video.setAttribute('width', '480px')
-                video.setAttribute('controls', true)
-                div.append(video)
+                jwplayer("player").setup({ 
+                    "playlist": [{
+                        "file": `${resp.url}`
+                    }]
+                });    
 
-                let source = document.createElement('source');
-                source.setAttribute('src', resp.url)
-                source.setAttribute('type', 'video/mp4')
-                video.appendChild(source)
-                video.play()
+                // let div = document.getElementById('player')
+                // let video = document.createElement('video');
+                // video.setAttribute('width', '480px')
+                // video.setAttribute('controls', true)
+                // div.append(video)
+
+                // let source = document.createElement('source');
+                // source.setAttribute('src', resp.url)
+                // source.setAttribute('type', 'video/mp4')
+                // video.appendChild(source)
+                // video.play()
             }
         });     
     } else {
