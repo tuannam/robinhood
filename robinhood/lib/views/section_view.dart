@@ -49,6 +49,10 @@ class _SectionWidgetState extends State<SectionWidget> {
     next = '';
   }
 
+  void _onPressed() {
+    print('pressed');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -61,9 +65,13 @@ class _SectionWidgetState extends State<SectionWidget> {
               width: 200.0,
               child: AspectRatio(
                 aspectRatio: 200 / 300,
-                child: Image.network(
-                  movies[position].image ?? '',
-                  fit: BoxFit.fill,
+                child: FloatingActionButton(
+                  focusColor: Colors.red,
+                  onPressed: _onPressed,
+                  child: Image.network(
+                    movies[position].image ?? '',
+                    fit: BoxFit.fill,
+                  ),
                 ),
               ),
             );

@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_new
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'views/home.dart';
 
 void main() {
@@ -13,10 +14,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Robinhood',
-      theme: ThemeData(scaffoldBackgroundColor: Colors.black),
-      home: const HomePage(),
-    );
+    return Shortcuts(
+        shortcuts: <LogicalKeySet, Intent>{
+          LogicalKeySet(LogicalKeyboardKey.select): ActivateIntent(),
+        },
+        child: MaterialApp(
+          title: 'Robinhood',
+          theme: ThemeData(scaffoldBackgroundColor: Colors.black),
+          home: const HomePage(),
+        ));
   }
 }
