@@ -10,8 +10,9 @@ class SectionWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() =>
-      _SectionWidgetState(this.movies, this.next);
+  State<StatefulWidget> createState() {
+    return _SectionWidgetState(movies, next);
+  }
 }
 
 class _SectionWidgetState extends State<SectionWidget> {
@@ -61,18 +62,24 @@ class _SectionWidgetState extends State<SectionWidget> {
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
           itemBuilder: (BuildContext content, int position) {
-            return Container(
+            var focusedButton = Focus(
+              child: IconButton(
+                  focusColor: Colors.red,
+                  onPressed: _onPressed,
+                  icon: Image.network(
+                    movies[position].image ?? '',
+                    fit: BoxFit.fill,
+                  )
+                  ),
+              onFocusChange: (value) {
+                print('onFocused');
+              },
+            );
+            return SizedBox(
               width: 200.0,
               child: AspectRatio(
                 aspectRatio: 200 / 300,
-                child: FloatingActionButton(
-                  focusColor: Colors.red,
-                  onPressed: _onPressed,
-                  child: Image.network(
-                    movies[position].image ?? '',
-                    fit: BoxFit.fill,
-                  ),
-                ),
+                child: focusedButton,
               ),
             );
           },
