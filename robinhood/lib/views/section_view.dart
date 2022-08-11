@@ -16,7 +16,7 @@ class SectionWidget extends StatefulWidget {
 
 class _SectionWidgetState extends State<SectionWidget> {
   final List<Movie> movies;
-  var next;
+  String? next;
   final _controller = ScrollController();
 
   _SectionWidgetState(this.movies, this.next);
@@ -30,12 +30,23 @@ class _SectionWidgetState extends State<SectionWidget> {
         if (!isLeft) {
           // isRight
           print('Reach End.');
-          if (next != null) {
-            Api.shared.getItems((p0) {}, next);
-          }
+          loadNext();
         }
       }
     });
+  }
+
+  void loadNext() {
+    if (next != '') {
+      Api.shared.getItems((p0) {
+        final section = p0 as Section;
+        setState(() {
+          movies.addAll(section.items);
+        });
+        next = section.next ?? '';
+      }, next ?? '');
+    }
+    next = '';
   }
 
   @override

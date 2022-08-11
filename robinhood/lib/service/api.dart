@@ -19,6 +19,11 @@ class Api {
   }
 
   Future<void> getItems(ApiCallback callback, String next) async {
-    print('next = ${next}');
+    final url = '$baseUrl/items_cont.cgi?${next}';
+    print('url = $url');
+    final response = await http.get(Uri.parse(url));
+    final object = json.decode(response.body) as Map<String, dynamic>;
+    final section = Section.fromJson(object);
+    callback(section);
   }
 }

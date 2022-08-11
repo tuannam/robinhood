@@ -25,11 +25,11 @@ name=$(list_categories | jq -r ".categories[] | select(.id==\"${id}\") | .name "
 next_id=$(next_category_id "$id")
 next='null'
 if [ "$next_id" != "null" ]; then
-    next="\"${base}/cgi-bin/section_cont.cgi?${next_id}\""
+    next="\"${next_id}\""
 fi
 
 items=$(QUERY_STRING="$id" bash category.cgi | tail -n 2 )
-
+item_count=$(echo "$items" | jq -r '. | length')
 
 read -r -d '' DATA <<- EOM
     {
@@ -37,7 +37,7 @@ read -r -d '' DATA <<- EOM
             "sections": [{
                 "title": "${name}",
                 "items": ${items},
-                "next": null
+                "next": "${id}/${item_count}/${item_count}"
             }],
             "next": ${next}
         }
