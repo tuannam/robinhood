@@ -33,15 +33,17 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: ListView(
-          scrollDirection: Axis.vertical,
-          children: const <Widget>[
-            SectionWidget(),
-            SectionWidget(),
-          ],
-        ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        body: Center(
+            child: ListView.separated(
+      scrollDirection: Axis.vertical,
+      itemBuilder: (BuildContext content, int position) {
+        final section = sections[position];
+        return SectionWidget(section: section);
+      },
+      separatorBuilder: (context, index) {
+        return const Divider();
+      },
+      itemCount: sections.length,
+    )));
   }
 }
