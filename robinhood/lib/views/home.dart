@@ -19,15 +19,19 @@ class _HomePageState extends State<HomePage> {
     _loadData();
   }
 
-  Future<void> _loadData() async {
+  Future<void> _loadData({String id = ''}) async {
     Api.shared.getSectionList((p0) {
       final sectionList = p0 as SectionList;
       if (sectionList.sections.isNotEmpty) {
+        final first = sectionList.sections.first;
         setState(() {
-          sections.add(sectionList.sections.first);
+          sections.add(first);
         });
       }
-    });
+      if (sectionList.next != null) {
+        _loadData(id: sectionList.next ?? '');
+      }
+    }, id: id);
   }
 
   @override
@@ -38,11 +42,9 @@ class _HomePageState extends State<HomePage> {
       scrollDirection: Axis.vertical,
       itemBuilder: (BuildContext content, int position) {
         final section = sections[position];
-        return SectionWidget(section: section);
+        return SectionWidget(movies: section.items, next: section.next);
       },
-      separatorBuilder: (context, index) {
-        return const Divider();
-      },
+      separatorBuilder: (context, index) => const SizedBox.shrink(),
       itemCount: sections.length,
     )));
   }

@@ -1,35 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:robinhood/service/api.dart';
 import '../model/section.dart';
 
 class SectionWidget extends StatefulWidget {
-  final Section section;
+  final List<Movie> movies;
+  final next;
 
-  const SectionWidget({Key? key, required this.section}) : super(key: key);
+  const SectionWidget({Key? key, required this.movies, required this.next})
+      : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _SectionWidgetState(section);
+  State<StatefulWidget> createState() =>
+      _SectionWidgetState(this.movies, this.next);
 }
 
 class _SectionWidgetState extends State<SectionWidget> {
-  final Section section;
-  _SectionWidgetState(this.section);
+  final List<Movie> movies;
+  var next;
+  final _controller = ScrollController();
+
+  _SectionWidgetState(this.movies, this.next);
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      if (_controller.position.atEdge) {
+        bool isLeft = _controller.position.pixels == 0;
+        if (!isLeft) {
+          // isRight
+          print('Reach End.');
+          if (next != null) {
+            Api.shared.getItems((p0) {}, next);
+          }
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
         margin: const EdgeInsets.symmetric(vertical: 20.0),
-        height: 200.0,
+        height: 300.0,
         child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (BuildContext content, int position) {
-              return Container(
-                width: 360.0,
-                color: position % 2 == 0 ? Colors.red : Colors.yellow,
-              );
-            },
-            separatorBuilder: (context, index) {
-              return const Divider();
-            },
-            itemCount: section.items.length));
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (BuildContext content, int position) {
+            return Container(
+              width: 200.0,
+              child: AspectRatio(
+                aspectRatio: 200 / 300,
+                child: Image.network(
+                  movies[position].image ?? '',
+                  fit: BoxFit.fill,
+                ),
+              ),
+            );
+          },
+          separatorBuilder: (context, index) {
+            return const Divider();
+          },
+          itemCount: movies.length,
+          controller: _controller,
+        ));
   }
 }
