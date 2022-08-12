@@ -12,6 +12,7 @@ class VideoDetailsWidget extends StatefulWidget {
 }
 
 class _VideoDetailsState extends State<VideoDetailsWidget> {
+  final _font = const TextStyle(fontSize: 18.0);
   final String videoId;
   MovieDetails? details;
 
@@ -34,6 +35,35 @@ class _VideoDetailsState extends State<VideoDetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Text(details?.title ?? '');
+    final row = Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          Container(
+            margin: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10),
+            child: SizedBox(
+              width: 320,
+              height: 240,
+              child: AspectRatio(
+                aspectRatio: 320 / 240,
+                child: Image.network(
+                  details?.image ?? '',
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+              child: Container(
+            margin: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(10),
+            child: Text(
+              Uri.decodeComponent(details?.content ?? ''),
+              style: _font,
+            ),
+          )),
+        ]);
+    return row;
   }
 }

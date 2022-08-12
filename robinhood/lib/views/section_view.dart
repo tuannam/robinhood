@@ -5,27 +5,24 @@ import '../model/section.dart';
 
 class SectionWidget extends StatefulWidget {
   final List<Movie> movies;
-  final next;
+  final String? next;
 
-  const SectionWidget({Key? key, required this.movies, required this.next})
+  const SectionWidget({Key? key, required this.movies, this.next})
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return _SectionWidgetState(movies, next);
-  }
+  State<StatefulWidget> createState() => _SectionWidgetState();
 }
 
 class _SectionWidgetState extends State<SectionWidget> {
-  final List<Movie> movies;
-  String? next;
   final _controller = ScrollController();
-
-  _SectionWidgetState(this.movies, this.next);
+  String? next;
 
   @override
   void initState() {
     super.initState();
+    this.next = widget.next;
+
     _controller.addListener(() {
       if (_controller.position.atEdge) {
         bool isLeft = _controller.position.pixels == 0;
@@ -39,16 +36,20 @@ class _SectionWidgetState extends State<SectionWidget> {
   }
 
   void loadNext() {
-    if (next != '') {
+    if (widget.next != '') {
       Api.shared.getItems((p0) {
         final section = p0 as Section;
         setState(() {
-          movies.addAll(section.items);
+          widget.movies.addAll(section.items);
         });
-        next = section.next ?? '';
-      }, next ?? '');
+        this.next = section.next ?? '';
+      }, this.next ?? '');
     }
-    next = '';
+    this.next = '';
+  }
+
+  bool isLastWidget(int index) {
+    return index >= widget.movies.length - 1;
   }
 
   @override
@@ -59,12 +60,16 @@ class _SectionWidgetState extends State<SectionWidget> {
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
           itemBuilder: (BuildContext content, int position) {
-            return VideoWidget(movie: movies[position]);
+            return VideoWidget(
+              movie: widget.movies[position],
+              index: position,
+              isLast: isLastWidget,
+            );
           },
           separatorBuilder: (context, index) {
             return const Divider();
           },
-          itemCount: movies.length,
+          itemCount: widget.movies.length,
           controller: _controller,
         ));
   }

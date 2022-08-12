@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:robinhood/views/video_details.dart';
 import '../model/section.dart';
 
+typedef IS_LAST_WIDGET = bool Function(int index);
+
 class VideoWidget extends StatefulWidget {
   final Movie movie;
+  final int index;
+  final IS_LAST_WIDGET isLast;
 
-  const VideoWidget({Key? key, required this.movie}) : super(key: key);
+  const VideoWidget(
+      {Key? key,
+      required this.movie,
+      required this.index,
+      required this.isLast})
+      : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _VideoWidgetState(movie);
+  State<StatefulWidget> createState() => _VideoWidgetState();
 }
 
 class _VideoWidgetState extends State<VideoWidget> {
-  _VideoWidgetState(this.movie);
-
-  final Movie movie;
   var isFocus = false;
 
   void _onFocus(bool value) {
@@ -25,9 +32,19 @@ class _VideoWidgetState extends State<VideoWidget> {
 
   Future<void> _onPressed(BuildContext context) async {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return VideoDetailsWidget(videoId: movie.code ?? '');
+      return VideoDetailsWidget(videoId: widget.movie.code ?? '');
     }));
     print('pushed');
+  }
+
+  KeyEventResult _onKey(FocusNode node, RawKeyEvent event) {
+    print('key = ${event.logicalKey}');
+    if (event.logicalKey == LogicalKeyboardKey.arrowRight &&
+        widget.isLast(widget.index)) {
+      return KeyEventResult.handled;
+    } else {
+      return KeyEventResult.ignored;
+    }
   }
 
   @override
@@ -36,11 +53,12 @@ class _VideoWidgetState extends State<VideoWidget> {
         padding: const EdgeInsets.all(3),
         onPressed: () => {_onPressed(context)},
         icon: Image.network(
-          movie.image ?? '',
+          widget.movie.image ?? '',
           fit: BoxFit.fill,
         ));
     var focusedButton = Focus(
       onFocusChange: _onFocus,
+      onKey: _onKey,
       child: iconButton,
     );
     return Container(
