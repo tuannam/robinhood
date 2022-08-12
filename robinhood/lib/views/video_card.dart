@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:robinhood/views/video_details.dart';
 import '../model/section.dart';
 
 class VideoWidget extends StatefulWidget {
@@ -22,15 +23,18 @@ class _VideoWidgetState extends State<VideoWidget> {
     });
   }
 
-  void _onPressed() {
-    print('pressed: ${movie.title}');
+  Future<void> _onPressed(BuildContext context) async {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return VideoDetailsWidget(videoId: movie.code ?? '');
+    }));
+    print('pushed');
   }
 
   @override
   Widget build(BuildContext context) {
     var iconButton = IconButton(
         padding: const EdgeInsets.all(3),
-        onPressed: _onPressed,
+        onPressed: () => {_onPressed(context)},
         icon: Image.network(
           movie.image ?? '',
           fit: BoxFit.fill,

@@ -10,7 +10,7 @@ class Api {
   Api._internal();
 
   Future<void> getSectionList(ApiCallback callback, {String id = ''}) async {
-    final url = '$baseUrl/section_cont.cgi?${id}';
+    final url = '$baseUrl/section_cont.cgi?$id';
     final response = await http.get(Uri.parse(url));
     final object = json.decode(response.body) as Map<String, dynamic>;
     final tab = object['tab'] as Map<String, dynamic>;
@@ -19,11 +19,23 @@ class Api {
   }
 
   Future<void> getItems(ApiCallback callback, String next) async {
-    final url = '$baseUrl/items_cont.cgi?${next}';
-    print('url = $url');
+    final url = '$baseUrl/items_cont.cgi?$next';
     final response = await http.get(Uri.parse(url));
     final object = json.decode(response.body) as Map<String, dynamic>;
     final section = Section.fromJson(object);
     callback(section);
+  }
+
+  Future<void> getMovieDetails(ApiCallback callback, String videoId) async {
+    final url = '$baseUrl/details.cgi?$videoId';
+    final response = await http.get(Uri.parse(url));
+    final list = json.decode(response.body) as List;
+    if (list.isNotEmpty) {
+      final first = list[0] as Map<String, dynamic>;
+      final details = MovieDetails.fromJson(first);
+      callback(details);
+    } else {
+      callback(null);
+    }
   }
 }

@@ -44,3 +44,30 @@ Map<String, dynamic> _$MovieToJson(Movie instance) => <String, dynamic>{
       'article_title': instance.title,
       'article_image': instance.image,
     };
+
+MovieDetails _$MovieDetailsFromJson(Map<String, dynamic> json) => MovieDetails(
+      json['article_title'] as String,
+      json['article_image'] as String,
+      json['article_content'] as String,
+      (json['extra_info'] as List<dynamic>)
+          .map((e) => MovieLink.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$MovieDetailsToJson(MovieDetails instance) =>
+    <String, dynamic>{
+      'article_title': instance.title,
+      'article_image': instance.image,
+      'article_content': instance.content,
+      'extra_info': instance.links,
+    };
+
+MovieLink _$MovieLinkFromJson(Map<String, dynamic> json) => MovieLink(
+      json['name'] as String,
+      json['link'] as String,
+    );
+
+Map<String, dynamic> _$MovieLinkToJson(MovieLink instance) => <String, dynamic>{
+      'name': instance.name,
+      'link': instance.link,
+    };

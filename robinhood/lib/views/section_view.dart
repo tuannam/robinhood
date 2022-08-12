@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:robinhood/service/api.dart';
-import 'package:robinhood/views/video_view.dart';
+import 'package:robinhood/views/video_card.dart';
 import '../model/section.dart';
 
 class SectionWidget extends StatefulWidget {
@@ -49,10 +49,6 @@ class _SectionWidgetState extends State<SectionWidget> {
       }, next ?? '');
     }
     next = '';
-  }
-
-  void _onPressed() {
-    print('pressed');
   }
 
   @override
