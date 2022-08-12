@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:robinhood/views/player.dart';
 import '../model/section.dart';
 import '../service/api.dart';
 
@@ -14,7 +13,7 @@ class VideoDetailsWidget extends StatefulWidget {
 }
 
 class _VideoDetailsState extends State<VideoDetailsWidget> {
-  final _contentFont = const TextStyle(fontSize: 16.0);
+  final _contentFont = const TextStyle(fontSize: 16.0, color: Colors.white);
   final String videoId;
   MovieDetails? details;
 
@@ -27,7 +26,6 @@ class _VideoDetailsState extends State<VideoDetailsWidget> {
     Api.shared.getMovieDetails((p0) {
       if (p0 != null) {
         final movieDetails = p0 as MovieDetails;
-        print(movieDetails.title);
         setState(() {
           details = movieDetails;
         });
@@ -37,6 +35,12 @@ class _VideoDetailsState extends State<VideoDetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var iconButton = IconButton(
+        onPressed: () => {},
+        icon: Image.network(
+          details?.image ?? '',
+          fit: BoxFit.contain,
+        ));
     final row1 = Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         mainAxisSize: MainAxisSize.max,
@@ -49,10 +53,7 @@ class _VideoDetailsState extends State<VideoDetailsWidget> {
               height: 240,
               child: AspectRatio(
                 aspectRatio: 320 / 240,
-                child: Image.network(
-                  details?.image ?? '',
-                  fit: BoxFit.contain,
-                ),
+                child: iconButton,
               ),
             ),
           ),
@@ -67,7 +68,7 @@ class _VideoDetailsState extends State<VideoDetailsWidget> {
           )),
         ]);
     final chapters = Container(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 50),
       child: Wrap(
           spacing: 5,
           runSpacing: 5,
@@ -78,8 +79,12 @@ class _VideoDetailsState extends State<VideoDetailsWidget> {
     final column = Column(
       children: [row1, chapters],
     );
-    return SingleChildScrollView(
-      child: column,
+    return MaterialApp(
+      theme: ThemeData(scaffoldBackgroundColor: Colors.black),
+      home: Scaffold(
+          body: SingleChildScrollView(
+        child: column,
+      )),
     );
   }
 }
@@ -103,6 +108,18 @@ class _ChapterButtonState extends State<ChapterButton> {
     });
   }
 
+  void play(String link) {
+    print('play $link');
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return PlayerWidget();
+    }));
+  }
+
+  Future<void> _onPressed(BuildContext context) async {
+    print('onPressed');
+    play(widget.link.link);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Focus(
@@ -110,7 +127,7 @@ class _ChapterButtonState extends State<ChapterButton> {
         child: Container(
           color: isFocus ? Colors.yellow : Colors.transparent,
           child: TextButton(
-              onPressed: () {},
+              onPressed: () => {_onPressed(context)},
               child: Text(
                 widget.link.name,
                 style: _chapterFont,
