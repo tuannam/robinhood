@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:robinhood/service/api.dart';
+import 'package:robinhood/views/video_view.dart';
 import '../model/section.dart';
 
 class SectionWidget extends StatefulWidget {
@@ -62,26 +63,7 @@ class _SectionWidgetState extends State<SectionWidget> {
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
           itemBuilder: (BuildContext content, int position) {
-            var focusedButton = Focus(
-              child: IconButton(
-                  focusColor: Colors.red,
-                  onPressed: _onPressed,
-                  icon: Image.network(
-                    movies[position].image ?? '',
-                    fit: BoxFit.fill,
-                  )
-                  ),
-              onFocusChange: (value) {
-                print('onFocused');
-              },
-            );
-            return SizedBox(
-              width: 200.0,
-              child: AspectRatio(
-                aspectRatio: 200 / 300,
-                child: focusedButton,
-              ),
-            );
+            return VideoWidget(movie: movies[position]);
           },
           separatorBuilder: (context, index) {
             return const Divider();
