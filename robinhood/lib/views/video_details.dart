@@ -23,8 +23,10 @@ class _VideoDetailsState extends State<VideoDetailsWidget> {
 
     Api.shared.getMovieDetails((p0) {
       if (p0 != null) {
+        final movieDetails = p0 as MovieDetails;
+        print(movieDetails.title);
         setState(() {
-          details = p0 as MovieDetails;
+          details = movieDetails;
         });
       }
     }, videoId);

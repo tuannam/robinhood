@@ -5,7 +5,7 @@ import '../model/section.dart';
 typedef ApiCallback = void Function(dynamic);
 
 class Api {
-  final String baseUrl = 'http://10.0.0.83/cgi-bin';
+  final String baseUrl = 'http://robinhood.swiftit.net/cgi-bin';
   static final Api shared = Api._internal();
   Api._internal();
 
