@@ -42,10 +42,10 @@ class _SectionWidgetState extends State<SectionWidget> {
         setState(() {
           widget.movies.addAll(section.items);
         });
-        this.next = section.next ?? '';
-      }, this.next ?? '');
+        next = section.next ?? '';
+      }, next ?? '');
     }
-    this.next = '';
+    next = '';
   }
 
   bool isLastWidget(int index) {
