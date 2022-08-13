@@ -5,7 +5,7 @@ import '../model/section.dart';
 typedef ApiCallback = void Function(dynamic);
 
 class Api {
-  final String baseUrl = 'https://robinhood.swiftit.net/cgi-bin';
+  final String baseUrl = 'http://robinhood.swiftit.net/cgi-bin';
   Map<String, String> get headers => {
         "Content-Type": "application/json",
         "X-MOVIE-SITE": "mphimmoi1",
@@ -42,5 +42,13 @@ class Api {
     } else {
       callback(null);
     }
+  }
+
+  Future<void> getRealLink(ApiCallback callback, String link) async {
+    final url = '$baseUrl/resolve.cgi?$link';
+    final response = await http.get(Uri.parse(url), headers: headers);
+    final object = json.decode(response.body) as Map<String, dynamic>;
+    final realUrl = object['url'];
+    callback(realUrl);
   }
 }

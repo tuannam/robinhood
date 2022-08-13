@@ -63,7 +63,7 @@ class _VideoDetailsState extends State<VideoDetailsWidget> {
             margin: const EdgeInsets.all(20),
             padding: const EdgeInsets.all(10),
             child: Text(
-              Uri.decodeComponent(details?.content ?? ''),
+              '',
               style: _contentFont,
             ),
           )),

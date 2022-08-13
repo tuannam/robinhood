@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:robinhood/service/api.dart';
 import 'package:video_player/video_player.dart';
 
 class PlayerWidget extends StatefulWidget {
@@ -17,10 +18,12 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   void initState() {
     super.initState();
     print('Playing ${widget.link} ...');
-    _controller = VideoPlayerController.network(widget.link)
-      ..initialize().then((_) {
-        setState(() {});
-      });
+    Api.shared.getRealLink((p0) {
+      _controller = VideoPlayerController.network(p0)
+        ..initialize().then((_) {
+          setState(() {});
+        });
+    }, widget.link);
   }
 
   @override
