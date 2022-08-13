@@ -19,11 +19,27 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     super.initState();
     print('Playing ${widget.link} ...');
     Api.shared.getRealLink((p0) {
-      _controller = VideoPlayerController.network(p0)
-        ..initialize().then((_) {
-          setState(() {});
-        });
+      print('real link: $p0');
+      if (p0.startsWith('https://www.ok.ru')) {
+        resolveOkRu(p0);
+      } else {
+        play(p0);
+      }
     }, widget.link);
+  }
+
+  void resolveOkRu(String url) {
+    Api.shared.getMediaUrlFromOkRu((p0) {
+      print('media url: $p0');
+      play(p0);
+    }, url);
+  }
+
+  void play(String mediaUrl) {
+    _controller = VideoPlayerController.network(mediaUrl)
+      ..initialize().then((_) {
+        setState(() {});
+      });
   }
 
   @override

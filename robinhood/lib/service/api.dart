@@ -5,10 +5,11 @@ import '../model/section.dart';
 typedef ApiCallback = void Function(dynamic);
 
 class Api {
-  final String baseUrl = 'http://robinhood.swiftit.net/cgi-bin';
+  // final String baseUrl = 'https://robinhood.swiftit.net/cgi-bin';
+  final String baseUrl = 'http://10.0.0.83/cgi-bin';
   Map<String, String> get headers => {
         "Content-Type": "application/json",
-        "X-MOVIE-SITE": "mphimmoi1",
+        "X-MOVIE-SITE": "vhay",
       };
 
   static final Api shared = Api._internal();
@@ -46,6 +47,16 @@ class Api {
 
   Future<void> getRealLink(ApiCallback callback, String link) async {
     final url = '$baseUrl/resolve.cgi?$link';
+    final response = await http.get(Uri.parse(url), headers: headers);
+    final object = json.decode(response.body) as Map<String, dynamic>;
+    final realUrl = object['url'];
+    callback(realUrl);
+  }
+
+  Future<void> getMediaUrlFromOkRu(ApiCallback callback, String link) async {
+    final encodedUrl = Uri.encodeComponent(link);
+    print(encodedUrl);
+    final url = '$baseUrl/okru.cgi?$encodedUrl';
     final response = await http.get(Uri.parse(url), headers: headers);
     final object = json.decode(response.body) as Map<String, dynamic>;
     final realUrl = object['url'];

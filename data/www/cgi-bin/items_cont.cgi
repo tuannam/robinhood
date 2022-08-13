@@ -33,7 +33,7 @@ fi
 
 select_source
 
-items=$(QUERY_STRING="$query" bash category.cgi | tail -n 2)
+items=$(HTTP_X_MOVIE_SITE="$HTTP_X_MOVIE_SITE"  QUERY_STRING="$query" bash category.cgi | tail -n +2)
 item_count=$(echo "$items" | jq -r '. | length')
 if [ $item_count -gt 0 ]; then
 	offset=$((offset+item_count))
