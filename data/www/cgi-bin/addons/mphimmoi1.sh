@@ -37,7 +37,7 @@ movies_in_category() {
         item=$(echo "$html" | xmllint --html -xpath "//li[@class='film-item '][$idx]" - 2>/dev/null)
         name=$(echo "$item" | xmllint --html -xpath "//div/p[@class='name']/text()" - 2>/dev/null)
         link=$(echo "$item" | xmllint --html -xpath "string(//a/@href)" - 2>/dev/null | xargs basename )
-        image=$(echo "$item" | xmllint --html -xpath "string(//img/@src)" - 2>/dev/null)
+        image=$(echo "$item" | xmllint --html -xpath "string(//img/@src)" - 2>/dev/null | sed 's/.*url=//g' )
 
         # echo "$item"        
 
