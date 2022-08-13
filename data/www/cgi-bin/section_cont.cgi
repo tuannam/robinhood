@@ -17,9 +17,11 @@ else
 fi
 
 id=${QUERY_STRING}
+
 if [ "$id" == "" ]; then
     id=$(list_categories | jq -r '.categories[0].id')
 fi
+
 name=$(list_categories | jq -r ".categories[] | select(.id==\"${id}\") | .name ")
 
 next_id=$(next_category_id "$id")
@@ -28,7 +30,8 @@ if [ "$next_id" != "null" ]; then
     next="\"${next_id}\""
 fi
 
-items=$(QUERY_STRING="$id" bash category.cgi | tail -n 2 )
+items=$(HTTP_X_MOVIE_SITE="$HTTP_X_MOVIE_SITE" QUERY_STRING="$id" bash category.cgi | tail -n +2 )
+
 item_count=$(echo "$items" | jq -r '. | length')
 
 read -r -d '' DATA <<- EOM

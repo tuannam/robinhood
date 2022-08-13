@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class PlayerWidget extends StatefulWidget {
-  const PlayerWidget({Key? key}) : super(key: key);
+  final String link;
+
+  const PlayerWidget({Key? key, required this.link}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _PlayerWidgetState();
@@ -14,9 +16,8 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   @override
   void initState() {
     super.initState();
-
-    _controller = VideoPlayerController.network(
-        "https://cdn2.p2pstreaming.tw/bigv2st2hls/2021/newlist/2022/07/01/002/WOO-YOUNG-WOO-1-muxed.mp4/playlist.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9OC8xMy8yMDIyIDQ6MTE6MTggQU0maGFzaF92YWx1ZT1DV2tVdjMwUVRwSE9Pc1h1YWR6UmV3PT0mdmFsaWRtaW51dGVzPTE4MCZpZD00OWJmMDQwODRhZjQ0MmY3YjdjNjMyNDM4MTg3YzRmNw==")
+    print('Playing ${widget.link} ...');
+    _controller = VideoPlayerController.network(widget.link)
       ..initialize().then((_) {
         setState(() {});
       });

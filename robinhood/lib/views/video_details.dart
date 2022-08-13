@@ -111,7 +111,7 @@ class _ChapterButtonState extends State<ChapterButton> {
 
   void play(String link) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return const PlayerWidget();
+      return PlayerWidget(link: widget.link.link);
     }));
   }
 
