@@ -53,7 +53,8 @@ class _VideoWidgetState extends State<VideoWidget> {
         padding: const EdgeInsets.all(3),
         onPressed: () => {_onPressed(context)},
         icon: Image.network(
-          widget.movie.image ?? '',
+          widget.movie.image ??
+              'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
           fit: BoxFit.fill,
         ));
     var focusedButton = Focus(

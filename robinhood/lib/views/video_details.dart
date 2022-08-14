@@ -54,7 +54,7 @@ class _VideoDetailsState extends State<VideoDetailsWidget> {
               height: 240,
               child: AspectRatio(
                 aspectRatio: 320 / 240,
-                child: iconButton,
+                child: details?.image != null ? iconButton : Container(),
               ),
             ),
           ),
@@ -80,13 +80,18 @@ class _VideoDetailsState extends State<VideoDetailsWidget> {
     final column = Column(
       children: [row1, chapters],
     );
-    return MaterialApp(
-      theme: ThemeData(scaffoldBackgroundColor: Colors.black),
-      home: Scaffold(
-          body: SingleChildScrollView(
-        child: column,
-      )),
-    );
+
+    return Scaffold(
+        body: SingleChildScrollView(
+      child: column,
+    ));
+    // return MaterialApp(
+    //   theme: ThemeData(scaffoldBackgroundColor: Colors.black),
+    //   home: Scaffold(
+    //       body: SingleChildScrollView(
+    //     child: column,
+    //   )),
+    // );
   }
 }
 
