@@ -52,14 +52,4 @@ class Api {
     final realUrl = object['url'];
     callback(realUrl);
   }
-
-  Future<void> getMediaUrlFromOkRu(ApiCallback callback, String link) async {
-    final encodedUrl = Uri.encodeComponent(link);
-    print(encodedUrl);
-    final url = '$baseUrl/okru.cgi?$encodedUrl';
-    final response = await http.get(Uri.parse(url), headers: headers);
-    final object = json.decode(response.body) as Map<String, dynamic>;
-    final realUrl = object['url'];
-    callback(realUrl);
-  }
 }

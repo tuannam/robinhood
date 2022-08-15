@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:robinhood/service/api.dart';
-import 'package:video_player/video_player.dart';
+// import 'package:video_player/video_player.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class PlayerWidget extends StatefulWidget {
   final String link;
@@ -12,7 +13,19 @@ class PlayerWidget extends StatefulWidget {
 }
 
 class _PlayerWidgetState extends State<PlayerWidget> {
-  VideoPlayerController? _controller;
+  // VideoPlayerController? _controller;
+  InAppWebView? _webView;
+  final _options = InAppWebViewGroupOptions(
+      crossPlatform: InAppWebViewOptions(
+        useShouldOverrideUrlLoading: true,
+        mediaPlaybackRequiresUserGesture: false,
+      ),
+      android: AndroidInAppWebViewOptions(
+        useHybridComposition: true,
+      ),
+      ios: IOSInAppWebViewOptions(
+        allowsInlineMediaPlayback: true,
+      ));
 
   @override
   void initState() {
@@ -20,86 +33,50 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     print('Playing ${widget.link} ...');
     Api.shared.getRealLink((p0) {
       print('real link: $p0');
-      if (p0.startsWith('https://www.ok.ru')) {
-        resolveOkRu(p0);
-      } else {
-        play(p0);
-      }
+      play(p0);
     }, widget.link);
   }
 
-  void resolveOkRu(String url) {
-    Api.shared.getMediaUrlFromOkRu((p0) {
-      print('media url: $p0');
-      play(p0);
-    }, url);
-  }
-
   void play(String mediaUrl) {
-    _controller = VideoPlayerController.network(mediaUrl)
-      ..initialize().then((_) {
-        setState(() {});
-      });
+    final wv = InAppWebView(
+      initialUrlRequest: URLRequest(url: Uri.parse(mediaUrl)),
+      initialOptions: _options,
+    );
+    setState(() {
+      _webView = wv;
+    });
+    // _controller = VideoPlayerController.network(mediaUrl)
+    //   ..initialize().then((_) {
+    //     setState(() {});
+    //   });
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _controller?.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   _controller?.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: _controller != null && _controller!.value.isInitialized
-            ? AspectRatio(
-                aspectRatio: _controller!.value.aspectRatio,
-                child: VideoPlayer(_controller!),
-              )
-            : Container(),
+        child: _webView != null ? _webView : Container(),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            _controller!.value.isPlaying
-                ? _controller!.pause()
-                : _controller!.play();
-          });
-        },
-        child: _controller != null
-            ? Icon(
-                _controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
-              )
-            : Container(),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     setState(() {
+      //       _controller!.value.isPlaying
+      //           ? _controller!.pause()
+      //           : _controller!.play();
+      //     });
+      //   },
+      //   child: _controller != null
+      //       ? Icon(
+      //           _controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
+      //         )
+      //       : Container(),
+      // ),
     );
-    // return MaterialApp(
-    //   theme: ThemeData(scaffoldBackgroundColor: Colors.black),
-    //   home: Scaffold(
-    //     body: Center(
-    //       child: _controller != null && _controller!.value.isInitialized
-    //           ? AspectRatio(
-    //               aspectRatio: _controller!.value.aspectRatio,
-    //               child: VideoPlayer(_controller!),
-    //             )
-    //           : Container(),
-    //     ),
-    //     floatingActionButton: FloatingActionButton(
-    //       onPressed: () {
-    //         setState(() {
-    //           _controller!.value.isPlaying
-    //               ? _controller!.pause()
-    //               : _controller!.play();
-    //         });
-    //       },
-    //       child: _controller != null
-    //           ? Icon(
-    //               _controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
-    //             )
-    //           : Container(),
-    //     ),
-    //   ),
-    // );
   }
 }

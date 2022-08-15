@@ -85,13 +85,6 @@ class _VideoDetailsState extends State<VideoDetailsWidget> {
         body: SingleChildScrollView(
       child: column,
     ));
-    // return MaterialApp(
-    //   theme: ThemeData(scaffoldBackgroundColor: Colors.black),
-    //   home: Scaffold(
-    //       body: SingleChildScrollView(
-    //     child: column,
-    //   )),
-    // );
   }
 }
 
