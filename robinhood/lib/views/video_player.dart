@@ -26,6 +26,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
       ios: IOSInAppWebViewOptions(
         allowsInlineMediaPlayback: true,
       ));
+  var buttonsVisible = false;
 
   @override
   void initState() {
@@ -61,22 +62,23 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: _webView != null ? _webView : Container(),
+        child: Stack(children: <Widget>[
+          _webView ?? Container(),
+          Opacity(
+            opacity: buttonsVisible ? 1 : 0,
+            child: FloatingActionButton(
+              autofocus: true,
+              onPressed: () {
+                setState(() {
+                  buttonsVisible = !buttonsVisible;
+                });
+                // Navigator.of(context).pop(true);
+              },
+              child: const Icon(Icons.pause),
+            ),
+          )
+        ]),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     setState(() {
-      //       _controller!.value.isPlaying
-      //           ? _controller!.pause()
-      //           : _controller!.play();
-      //     });
-      //   },
-      //   child: _controller != null
-      //       ? Icon(
-      //           _controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
-      //         )
-      //       : Container(),
-      // ),
     );
   }
 }

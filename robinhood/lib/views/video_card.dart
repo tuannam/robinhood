@@ -65,9 +65,9 @@ class _VideoWidgetState extends State<VideoWidget> {
     return Container(
       color: isFocus ? Colors.red : Colors.transparent,
       child: SizedBox(
-        width: 200.0,
+        width: 150.0,
         child: AspectRatio(
-          aspectRatio: 200 / 300,
+          aspectRatio: 150 / 225,
           child: focusedButton,
         ),
       ),
