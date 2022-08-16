@@ -36,18 +36,20 @@ movies_in_category() {
     count=$(echo "${html}" | xmllint --html -xpath "count(//li[@class='TPostMv'])" - 2>/dev/null)
     idx=1
     echo -e "["
-    while [ $idx -le $count ]; do
-        item=$(echo "${html}" | xmllint --html -xpath "//li[@class='TPostMv'][$idx]" - 2>/dev/null)
-        title=$(echo "$item" | xmllint --html -xpath "string(//h2)" - 2>/dev/null)
-        image=$(echo "$item" | xmllint --html -xpath "string(//img/@src)" - 2>/dev/null)
-        code=$(echo "$item" | xmllint --html -xpath "string(//a/@href)" - 2>/dev/null | cut -c 23-)
+    while [ $idx -le $count ]; do        
+        title=$(echo "$html" | xmllint --html -xpath "//li[@class='TPostMv'][$idx]/article/a/h2/text()" - 2>/dev/null)
+        image=$(echo "$html" | xmllint --html -xpath "string(//li[@class='TPostMv'][$idx]/article/a/div/figure/img/@src)" - 2>/dev/null)
+        code=$(echo "$html" | xmllint --html -xpath "string(//li[@class='TPostMv'][$idx]/article/a/@href)" - 2>/dev/null | cut -c 23-)
+        title1=$(echo "${title}" | cut -d':' -f1)
+        title2=$(echo "${title}" | cut -d':' -f2 | xargs)
         if [ $idx -ne 1 ]; then
             echo ","
         fi
         echo "{"
         echo "\"article_code\": \"${code}\"",
         echo "\"article_image\": \"${image}\"",
-        echo "\"article_title\": \"${title}\""
+        echo "\"article_title\": \"${title1}\"",
+        echo "\"article_title_en\": \"${title2}\""
         echo -n "}"
         idx=$((idx+1))
     done
