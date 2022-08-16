@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:robinhood/views/video_player.dart';
 import '../model/section.dart';
 import '../service/api.dart';
-import 'video_player.dart';
+import 'player.dart';
 
 class VideoDetailsWidget extends StatefulWidget {
   final String videoId;

@@ -21,9 +21,15 @@ class WebViewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: InAppWebView(
-            initialUrlRequest: URLRequest(url: Uri.parse(url)),
-            initialOptions: _options),
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            InAppWebView(
+                initialUrlRequest: URLRequest(url: Uri.parse(url)),
+                initialOptions: _options),
+            //IconButton(onPressed: () {}, icon: const Icon(Icons.play_arrow))
+          ],
+        ),
       ),
     );
   }
