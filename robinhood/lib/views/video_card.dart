@@ -22,6 +22,7 @@ class VideoWidget extends StatefulWidget {
 }
 
 class _VideoWidgetState extends State<VideoWidget> {
+  final _titleFont = const TextStyle(fontSize: 10.0, color: Colors.white);
   var isFocus = false;
 
   void _onFocus(bool value) {
@@ -62,15 +63,27 @@ class _VideoWidgetState extends State<VideoWidget> {
       onKey: _onKey,
       child: iconButton,
     );
+
+    final sizedBox = SizedBox(
+      width: 150,
+      child: Column(
+        children: [
+          AspectRatio(
+            aspectRatio: 150 / 225,
+            child: focusedButton,
+          ),
+          Text(
+            widget.movie.title ?? '',
+            style: _titleFont,
+            overflow: TextOverflow.ellipsis,
+          )
+        ],
+      ),
+    );
+
     return Container(
       color: isFocus ? Colors.red : Colors.transparent,
-      child: SizedBox(
-        width: 150.0,
-        child: AspectRatio(
-          aspectRatio: 150 / 225,
-          child: focusedButton,
-        ),
-      ),
+      child: sizedBox,
     );
   }
 }

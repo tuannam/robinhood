@@ -37,7 +37,8 @@ class _VideoDetailsState extends State<VideoDetailsWidget> {
   @override
   Widget build(BuildContext context) {
     var iconButton = IconButton(
-        onPressed: () => {},
+        onPressed: () => {print("iconBtn pressed.")},
+        autofocus: true,
         icon: Image.network(
           details?.image ?? '',
           fit: BoxFit.contain,

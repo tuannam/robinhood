@@ -56,7 +56,7 @@ class _SectionWidgetState extends State<SectionWidget> {
   Widget build(BuildContext context) {
     return Container(
         margin: const EdgeInsets.symmetric(vertical: 10.0),
-        height: 225.0,
+        height: 241.0,
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
           itemBuilder: (BuildContext content, int position) {
