@@ -4,7 +4,6 @@ const loadMovie = (code) => {
     getJSON(`/cgi-bin/details.cgi?${code}`, function(movies) {  
         console.log(movies);
         let movie = movies[0];
-        let titles = movie["article_title"].split('-');
         let chapters = ""
         movie['extra_info'].forEach(chapter => {
             chapters += `<span class="chapter">`
@@ -20,14 +19,6 @@ const loadMovie = (code) => {
             }
             chapter += `</span>`
         });
-        var content=decodeURIComponent(movie.article_content)
-        var contentDiv = document.createElement('div')
-        contentDiv.innerHTML = content
-        
-        var html = contentDiv.firstChild.innerHTML
-        if (contentDiv.firstChild.firstChild && contentDiv.firstChild.firstChild.nodeName == "P") {
-            html = contentDiv.firstChild.firstChild.innerHTML
-        }
         box.innerHTML = 
         `<table>
             <tr valign="top">
@@ -37,13 +28,13 @@ const loadMovie = (code) => {
                 <td>
                 <article class="flim-info">
                 <div class="pc">
-                    <h2 class="flim-title vi">${titles[0]}</h2>
-                    <h3 class="flim-title eng">${titles[1]}</h3>
+                    <h2 class="flim-title vi">${movie.article_title}</h2>
+                    <h3 class="flim-title eng">${movie.article_title_en}</h3>
                 </div>
                 </article>
                 </td>
             </tr>
-            <tr><td width="250">${html}</td></tr>
+            <tr><td width="250">${movie.article_content}</td></tr>
             <tr>
                 <td>${chapters}</td>
             </tr>
