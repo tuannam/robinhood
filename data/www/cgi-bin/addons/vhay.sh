@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ./lib/common.sh
+
 BASE_URL="https://vhay.net/"
 USER_AGENT='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
 
@@ -67,8 +69,8 @@ details() {
     title=$(echo "$html" | xmllint --html -xpath "//h1[@class='Title']/text()" - 2>/dev/null)
     subTitle=$(echo "$html" | xmllint --html -xpath "//h2[@class='SubTitle']/text()" - 2>/dev/null)
     image=$(echo "$html" | xmllint --html -xpath "string(//figure/img/@src)" - 2>/dev/null)
-    content=$(echo "$html" | xmllint --html -xpath "//header/div[@class='Description']/text()" - 2>/dev/null)
-    escaped_content=$(echo -n "<div>${content}</div>" | jq -Rsa . )
+    content=$(echo "$html" | xmllint --html -xpath "//header/div[@class='Description']" - 2>/dev/null )
+    escaped_content=$(urldecode "${content}" | sed 's/<.*>//g' | jq -Rsa . )
 
     url="${BASE_URL}phim/$1/xem-phim.html"
     html=$(curl "${url}" \
@@ -82,7 +84,7 @@ details() {
 
     while [ $serverIdx -le $serverCount ]; do
         serverItem=$(echo "$html" | xmllint --html -xpath "//div[ul[starts-with(@class,'list-episode')]][$serverIdx]" - 2>/dev/null)
-        serverName=$(echo "${serverItem}" | xmllint --html -xpath "//h3/text()" - | sed 's/ $//' | sed 's/^ //')
+        serverName=$(echo "$html" | xmllint --html -xpath "//div[ul[starts-with(@class,'list-episode')]][$serverIdx]/h3/text()" - | sed 's/ $//' | sed 's/^ //')
         chapterCount=$(echo "${serverItem}" | xmllint --html -xpath "count(//ul/li)" -)
         chapterIdx=1
         while [ $chapterIdx -le $chapterCount ]; do
@@ -105,7 +107,8 @@ details() {
 
     read -r -d '' DATA <<- EOM
 		[{
-			"article_title": "${title} - ${subTitle}",
+			"article_title": "${title}",
+            "article_title_en": "${subTitle}",
 			"article_image": "${image}",
             "article_content": ${escaped_content},
             "extra_info": ${extra_info}
