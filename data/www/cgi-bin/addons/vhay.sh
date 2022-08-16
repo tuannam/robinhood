@@ -84,7 +84,7 @@ details() {
 
     while [ $serverIdx -le $serverCount ]; do
         serverItem=$(echo "$html" | xmllint --html -xpath "//div[ul[starts-with(@class,'list-episode')]][$serverIdx]" - 2>/dev/null)
-        serverName=$(echo "$html" | xmllint --html -xpath "//div[ul[starts-with(@class,'list-episode')]][$serverIdx]/h3/text()" - | sed 's/ $//' | sed 's/^ //')
+        serverName=$(echo "$html" | xmllint --html -xpath "//div[ul[starts-with(@class,'list-episode')]][$serverIdx]/h3/text()" - 2>/dev/null | sed 's/ $//' | sed 's/^ //')
         chapterCount=$(echo "${serverItem}" | xmllint --html -xpath "count(//ul/li)" -)
         chapterIdx=1
         while [ $chapterIdx -le $chapterCount ]; do
@@ -95,8 +95,8 @@ details() {
             if [ ${#extra_info} -gt 1 ]; then
                  extra_info="${extra_info}, "
             fi
-            chapter=$(echo -en "${serverName} - Tập ${name}")
-            extra_info="${extra_info}{ \"name\": \"${chapter}\", \"link\": \"resolver-$1/${link}\" }"
+            chapter=$(echo -en "${serverName} - Tập ${name}" | jq -Rsa .)
+            extra_info="${extra_info}{ \"name\": ${chapter}, \"link\": \"resolver-$1/${link}\" }"
 
             chapterIdx=$((chapterIdx+1))
         done

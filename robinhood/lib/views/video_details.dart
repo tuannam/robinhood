@@ -51,9 +51,9 @@ class _VideoDetailsState extends State<VideoDetailsWidget> {
             padding: const EdgeInsets.all(10),
             child: SizedBox(
               width: 320,
-              height: 240,
+              height: 480,
               child: AspectRatio(
-                aspectRatio: 320 / 240,
+                aspectRatio: 320 / 480,
                 child: details?.image != null ? iconButton : Container(),
               ),
             ),
@@ -62,9 +62,20 @@ class _VideoDetailsState extends State<VideoDetailsWidget> {
               child: Container(
             margin: const EdgeInsets.all(20),
             padding: const EdgeInsets.all(10),
-            child: Text(
-              '',
-              style: _contentFont,
+            child: Column(
+              children: [
+                Opacity(
+                  opacity: 0,
+                  child: TextButton(
+                    onPressed: () {},
+                    child: const Text(' '),
+                  ),
+                ),
+                Text(
+                  details?.content ?? '',
+                  style: _contentFont,
+                )
+              ],
             ),
           )),
         ]);
