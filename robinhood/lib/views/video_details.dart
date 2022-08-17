@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:robinhood/components/loader_widget.dart';
 import '../model/section.dart';
 import '../service/api.dart';
 import 'player.dart';
@@ -16,6 +17,7 @@ class _VideoDetailsState extends State<VideoDetailsWidget> {
   final _contentFont = const TextStyle(fontSize: 16.0, color: Colors.white);
   final String videoId;
   MovieDetails? details;
+  var loading = true;
 
   _VideoDetailsState(this.videoId);
 
@@ -27,6 +29,7 @@ class _VideoDetailsState extends State<VideoDetailsWidget> {
       if (p0 != null) {
         final movieDetails = p0 as MovieDetails;
         setState(() {
+          loading = false;
           details = movieDetails;
         });
       }
@@ -93,9 +96,11 @@ class _VideoDetailsState extends State<VideoDetailsWidget> {
     );
 
     return Scaffold(
-        body: SingleChildScrollView(
-      child: column,
-    ));
+        body: LoaderView(
+            showLoader: loading,
+            child: SingleChildScrollView(
+              child: column,
+            )));
   }
 }
 
