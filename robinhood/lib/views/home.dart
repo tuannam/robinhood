@@ -12,6 +12,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final sections = <Section>[];
+  var isSearchFocus = false;
 
   @override
   void initState() {
@@ -34,13 +35,52 @@ class _HomePageState extends State<HomePage> {
     }, id: id);
   }
 
+  void _onSearchFocus(bool value) {
+    setState(() {
+      isSearchFocus = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-            child: SectionListWidget(
-      sections: sections,
-    )));
+        body: SingleChildScrollView(
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextButton(
+                onPressed: () {},
+                child: Container(
+                  alignment: Alignment.bottomLeft,
+                  margin: const EdgeInsets.fromLTRB(20, 40, 20, 00),
+                  child: Container(
+                      padding: EdgeInsets.all(isSearchFocus ? 20.0 : 15.0),
+                      decoration: const BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey,
+                                offset: Offset(1.0, 0.0),
+                                blurRadius: 1)
+                          ]),
+                      child: Focus(
+                        onFocusChange: _onSearchFocus,
+                        child: const Icon(
+                          Icons.search,
+                          color: Colors.white,
+                        ),
+                      )),
+                )),
+            SectionListWidget(
+              sections: sections,
+            )
+          ],
+        ),
+      ),
+    ));
   }
 }
 
@@ -53,6 +93,7 @@ class SectionListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       scrollDirection: Axis.vertical,
+      shrinkWrap: true,
       itemBuilder: (BuildContext content, int position) {
         final section = sections[position];
         return SectionWidget(

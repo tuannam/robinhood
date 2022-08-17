@@ -64,7 +64,7 @@ class _SectionWidgetState extends State<SectionWidget> {
           margin: const EdgeInsets.fromLTRB(10.0, 20.0, 0, 5.0),
           child: Text(
             widget.category,
-            style: TextStyle(color: Colors.orange),
+            style: const TextStyle(color: Colors.orange),
           ),
         ),
         Container(
