@@ -31,16 +31,14 @@ class _VideoCardState extends State<VideoCard> {
     });
   }
 
-  Future<void> _onPressed(BuildContext context) async {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return VideoDetailsWidget(videoId: widget.movie.code ?? '');
-    }));
-    print('pushed');
-  }
-
   KeyEventResult _onKey(FocusNode node, RawKeyEvent event) {
     print('key = ${event.logicalKey}');
-    if (event.logicalKey == LogicalKeyboardKey.arrowRight &&
+    if (event.logicalKey == LogicalKeyboardKey.enter) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+        return VideoDetailsWidget(videoId: widget.movie.code ?? '');
+      }));
+      return KeyEventResult.handled;
+    } else if (event.logicalKey == LogicalKeyboardKey.arrowRight &&
         widget.isLast(widget.index)) {
       return KeyEventResult.handled;
     } else {
@@ -50,27 +48,19 @@ class _VideoCardState extends State<VideoCard> {
 
   @override
   Widget build(BuildContext context) {
-    var iconButton = IconButton(
-        padding: const EdgeInsets.all(3),
-        onPressed: () => {_onPressed(context)},
-        icon: Image.network(
-          widget.movie.image ??
-              'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
-          fit: BoxFit.fill,
-        ));
-    var focusedButton = Focus(
-      onFocusChange: _onFocus,
-      onKey: _onKey,
-      child: iconButton,
-    );
-
     final sizedBox = SizedBox(
       width: 150,
       child: Column(
         children: [
           AspectRatio(
             aspectRatio: 150 / 225,
-            child: focusedButton,
+            child: Container(
+                padding: EdgeInsets.all(5),
+                child: Image.network(
+                  widget.movie.image ??
+                      'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
+                  fit: BoxFit.fill,
+                )),
           ),
           Text(
             widget.movie.title ?? '',
@@ -81,9 +71,12 @@ class _VideoCardState extends State<VideoCard> {
       ),
     );
 
-    return Container(
-      color: isFocus ? Colors.red : Colors.transparent,
-      child: sizedBox,
-    );
+    return Focus(
+        onFocusChange: _onFocus,
+        onKey: _onKey,
+        child: Container(
+          color: isFocus ? Colors.red : Colors.transparent,
+          child: sizedBox,
+        ));
   }
 }
