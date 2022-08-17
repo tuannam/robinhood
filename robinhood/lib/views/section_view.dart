@@ -4,10 +4,12 @@ import 'package:robinhood/views/video_card.dart';
 import '../model/section.dart';
 
 class SectionWidget extends StatefulWidget {
+  final String category;
   final List<Movie> movies;
   final String? next;
 
-  const SectionWidget({Key? key, required this.movies, this.next})
+  const SectionWidget(
+      {Key? key, required this.category, required this.movies, this.next})
       : super(key: key);
 
   @override
@@ -54,23 +56,37 @@ class _SectionWidgetState extends State<SectionWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        margin: const EdgeInsets.symmetric(vertical: 10.0),
-        height: 241.0,
-        child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (BuildContext content, int position) {
-            return VideoWidget(
-              movie: widget.movies[position],
-              index: position,
-              isLast: isLastWidget,
-            );
-          },
-          separatorBuilder: (context, index) {
-            return const Divider();
-          },
-          itemCount: widget.movies.length,
-          controller: _controller,
-        ));
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.fromLTRB(10.0, 20.0, 0, 5.0),
+          child: Text(
+            widget.category,
+            style: TextStyle(color: Colors.orange),
+          ),
+        ),
+        Container(
+            margin: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+            // color: Colors.yellow,
+            height: 250.0,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext content, int position) {
+                return VideoCard(
+                  movie: widget.movies[position],
+                  index: position,
+                  isLast: isLastWidget,
+                );
+              },
+              separatorBuilder: (context, index) {
+                return const Divider();
+              },
+              itemCount: widget.movies.length,
+              controller: _controller,
+            )),
+      ],
+    );
   }
 }

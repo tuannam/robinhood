@@ -5,12 +5,12 @@ import '../model/section.dart';
 
 typedef IS_LAST_WIDGET = bool Function(int index);
 
-class VideoWidget extends StatefulWidget {
+class VideoCard extends StatefulWidget {
   final Movie movie;
   final int index;
   final IS_LAST_WIDGET isLast;
 
-  const VideoWidget(
+  const VideoCard(
       {Key? key,
       required this.movie,
       required this.index,
@@ -18,10 +18,10 @@ class VideoWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _VideoWidgetState();
+  State<StatefulWidget> createState() => _VideoCardState();
 }
 
-class _VideoWidgetState extends State<VideoWidget> {
+class _VideoCardState extends State<VideoCard> {
   final _titleFont = const TextStyle(fontSize: 10.0, color: Colors.white);
   var isFocus = false;
 

@@ -38,14 +38,30 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
-            child: ListView.separated(
+            child: SectionListWidget(
+      sections: sections,
+    )));
+  }
+}
+
+class SectionListWidget extends StatelessWidget {
+  final List<Section> sections;
+
+  const SectionListWidget({Key? key, required this.sections}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
       scrollDirection: Axis.vertical,
       itemBuilder: (BuildContext content, int position) {
         final section = sections[position];
-        return SectionWidget(movies: section.items, next: section.next);
+        return SectionWidget(
+            category: section.title ?? '',
+            movies: section.items,
+            next: section.next);
       },
       separatorBuilder: (context, index) => const SizedBox.shrink(),
       itemCount: sections.length,
-    )));
+    );
   }
 }
