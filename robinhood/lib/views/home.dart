@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:robinhood/components/search_button.dart';
+import 'package:robinhood/views/search_view.dart';
 import 'package:robinhood/views/section_view.dart';
 import '../model/section.dart';
 import '../service/api.dart';
@@ -43,6 +44,13 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void _onSearchPressed() {
+    print('_onSearchPressed');
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return const SearchView();
+    }));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,6 +65,7 @@ class _HomePageState extends State<HomePage> {
               margin: const EdgeInsets.all(20),
               child: SearchButton(
                 onFocus: _onSearchFocus,
+                onSearch: _onSearchPressed,
               ),
             ),
             SectionListWidget(
