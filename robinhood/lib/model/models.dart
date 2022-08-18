@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'section.g.dart';
+part 'models.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class SectionList {

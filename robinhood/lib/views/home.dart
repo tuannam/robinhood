@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:robinhood/components/search_button.dart';
 import 'package:robinhood/views/search_view.dart';
 import 'package:robinhood/views/section_view.dart';
-import '../model/section.dart';
+import '../model/models.dart';
 import '../service/api.dart';
 
 class HomePage extends StatefulWidget {

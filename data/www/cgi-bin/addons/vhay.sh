@@ -129,11 +129,13 @@ search() {
     idx=1
     echo "["
     while [ $idx -le $count ]; do        
-        item=$(echo "$html" | xmllint --html -xpath "//ul[starts-with(@class, 'MovieList')]/li[@class='TPostMv'][$idx]" - 2>/dev/null)
-        link=$(echo "$item" | xmllint --html -xpath "string(//a/@href)" - 2>/dev/null | xargs basename)
+        # item=$(echo "$html" | xmllint --html -xpath "//ul[starts-with(@class, 'MovieList')]/li[@class='TPostMv'][$idx]" - 2>/dev/null)
+        link=$(echo "$html" | xmllint --html -xpath "string(//ul[starts-with(@class, 'MovieList')]/li[@class='TPostMv'][$idx]/*/a/@href)" - 2>/dev/null | xargs basename)
         # name=$(echo "$item" | xmllint --html -xpath "string(//h2/text())" - 2>/dev/null)
-        image=$(echo "$item" | xmllint --html -xpath "string(//img/@src)" - 2>/dev/null)
-        name=$(echo "$item" | xmllint --html -xpath "string(//img/@alt)" - 2>/dev/null)
+        image=$(echo "$html" | xmllint --html -xpath "string(//ul[starts-with(@class, 'MovieList')]/li[@class='TPostMv'][$idx]/article/a/div/figure/img/@src)" - 2>/dev/null)
+        name=$(echo "$html" | xmllint --html -xpath "string(//ul[starts-with(@class, 'MovieList')]/li[@class='TPostMv'][$idx]/article/a/div/figure/img/@alt)" - 2>/dev/null)
+		title=$(echo "$name" | cut -d'-' -f1 | sed 's/ $//'| tr -d '\n' | jq -Rsa .)
+		title_en=$(echo "$name" | cut -d'-' -f2 | sed 's/ $//'| tr -d '\n' | jq -Rsa .)
 
         if [ $idx -gt 1 ]; then
             echo ", "
@@ -141,7 +143,8 @@ search() {
         echo -n "{"
         echo "\"article_code\": \"${link}\"",
         echo "\"article_image\": \"${image}\"",
-        echo "\"article_title\": \"${name}\""
+        echo "\"article_title\": ${title}",
+		echo "\"article_title_en\": ${title_en}"
         echo -n "}"
 
         idx=$((idx+1))

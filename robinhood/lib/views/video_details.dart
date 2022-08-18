@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:robinhood/components/loader_widget.dart';
-import '../model/section.dart';
+import '../model/models.dart';
 import '../service/api.dart';
 import 'player.dart';
 

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../model/section.dart';
+import '../model/models.dart';
 
 typedef ApiCallback = void Function(dynamic);
 
@@ -57,7 +57,8 @@ class Api {
   Future<void> search(ApiCallback callback, String keyword) async {
     final url = '$baseUrl/search.cgi?${Uri.encodeComponent(keyword)}';
     final response = await http.get(Uri.parse(url), headers: headers);
-    final results = json.decode(response.body) as List;
-    callback(results);
+    final results = json.decode(response.body) as List<dynamic>;
+    final movies = results.map((e) => Movie.fromJson(e)).toList();
+    callback(movies);
   }
 }

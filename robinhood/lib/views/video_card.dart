@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:robinhood/views/video_details.dart';
-import '../model/section.dart';
+import '../model/models.dart';
 import '../common.dart';
 
 typedef IS_LAST_WIDGET = bool Function(int index);

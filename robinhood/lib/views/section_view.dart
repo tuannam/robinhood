@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:robinhood/service/api.dart';
 import 'package:robinhood/views/video_card.dart';
-import '../model/section.dart';
+import '../model/models.dart';
 
 class SectionWidget extends StatefulWidget {
   final String category;
