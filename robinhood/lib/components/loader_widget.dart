@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class LoaderView extends StatelessWidget {
   final Widget child;
@@ -10,14 +8,18 @@ class LoaderView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ModalProgressHUD(
-      color: Colors.black,
-      inAsyncCall: showLoader,
-      progressIndicator: const SpinKitFadingCircle(
-        color: Colors.yellow,
-        size: 50.0,
-      ),
-      child: child,
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        child,
+        if (showLoader)
+          const Text(
+            "Loading...",
+            style: TextStyle(color: Colors.yellow),
+          )
+        else
+          Container()
+      ],
     );
   }
 }

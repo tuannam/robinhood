@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:robinhood/views/video_details.dart';
 import '../model/section.dart';
+import '../common.dart';
 
 typedef IS_LAST_WIDGET = bool Function(int index);
 
@@ -32,11 +33,8 @@ class _VideoCardState extends State<VideoCard> {
   }
 
   KeyEventResult _onKey(FocusNode node, RawKeyEvent event) {
-    print('key = ${event.logicalKey}');
-    if (event.logicalKey == LogicalKeyboardKey.enter) {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-        return VideoDetailsWidget(videoId: widget.movie.code ?? '');
-      }));
+    if (ACCEPT_KEYS.contains(event.logicalKey)) {
+      navToDetails();
       return KeyEventResult.handled;
     } else if (event.logicalKey == LogicalKeyboardKey.arrowRight &&
         widget.isLast(widget.index)) {
@@ -44,6 +42,12 @@ class _VideoCardState extends State<VideoCard> {
     } else {
       return KeyEventResult.ignored;
     }
+  }
+
+  void navToDetails() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return VideoDetailsWidget(videoId: widget.movie.code ?? '');
+    }));
   }
 
   @override
@@ -74,9 +78,12 @@ class _VideoCardState extends State<VideoCard> {
     return Focus(
         onFocusChange: _onFocus,
         onKey: _onKey,
-        child: Container(
-          color: isFocus ? Colors.red : Colors.transparent,
-          child: sizedBox,
+        child: InkWell(
+          onTap: () => {navToDetails()},
+          child: Container(
+            color: isFocus ? Colors.red : Colors.transparent,
+            child: sizedBox,
+          ),
         ));
   }
 }

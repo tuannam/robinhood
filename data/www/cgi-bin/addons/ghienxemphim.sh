@@ -72,7 +72,7 @@ details() {
 }
 
 search() {
-    $keyword=$1
+    keyword=$1
     read -r -d '' PAYLOAD <<- EOM
 	    {"q": "$keyword",
 		"limit": 9,
@@ -83,7 +83,7 @@ search() {
     -H "referer: ${BASE_URL}" \
     -H "user-agent: ${USER_AGENT}" \
     --data-raw "${PAYLOAD}" \
-    --compressed)
+    --compressed -s)
 
     echo "${response}"
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../common.dart';
 
 typedef OnFocus = void Function(bool value);
 typedef OnSeachPressed = void Function();
@@ -30,7 +31,7 @@ class _SearchButtonState extends State<SearchButton> {
   }
 
   KeyEventResult _onKey(FocusNode node, RawKeyEvent event) {
-    if (event.logicalKey == LogicalKeyboardKey.enter) {
+    if (ACCEPT_KEYS.contains(event.logicalKey)) {
       widget.onSearch();
     }
     return KeyEventResult.ignored;
@@ -38,19 +39,22 @@ class _SearchButtonState extends State<SearchButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.all(isSearchFocus ? 20.0 : 15.0),
-        decoration: const BoxDecoration(
-            color: Colors.red,
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.grey, offset: Offset(1.0, 0.0), blurRadius: 1)
-            ]),
-        child: Focus(
-          onFocusChange: _onSearchFocus,
-          onKey: _onKey,
-          child: const Icon(Icons.search, color: Colors.white),
-        ));
+    return InkWell(
+      onTap: () => {widget.onSearch()},
+      child: Container(
+          padding: EdgeInsets.all(isSearchFocus ? 20.0 : 15.0),
+          decoration: const BoxDecoration(
+              color: Colors.red,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.grey, offset: Offset(1.0, 0.0), blurRadius: 1)
+              ]),
+          child: Focus(
+            onFocusChange: _onSearchFocus,
+            onKey: _onKey,
+            child: const Icon(Icons.search, color: Colors.white),
+          )),
+    );
   }
 }

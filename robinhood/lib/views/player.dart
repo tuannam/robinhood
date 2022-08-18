@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:robinhood/components/loader_widget.dart';
 import 'package:robinhood/service/api.dart';
 import 'package:robinhood/views/video_player.dart';
 import 'package:robinhood/views/webview_player.dart';
@@ -17,6 +18,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   WebViewWidget? _webView;
   VideoPlayerWidget? _videoPlayer;
   VideoPlayerController? _controller;
+  var loading = true;
 
   @override
   void initState() {
@@ -24,6 +26,9 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     print('Playing ${widget.link} ...');
     Api.shared.getRealLink((p0) {
       print('real link: $p0');
+      setState(() {
+        loading = false;
+      });
       play(p0);
     }, widget.link);
   }
@@ -55,13 +60,15 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-          child: _controller != null && _controller!.value.isInitialized
-              ? AspectRatio(
-                  aspectRatio: _controller!.value.aspectRatio,
-                  child: VideoPlayer(_controller!),
-                )
-              : _webView ?? Container()),
+      body: LoaderView(
+          showLoader: loading,
+          child: Center(
+              child: _controller != null && _controller!.value.isInitialized
+                  ? AspectRatio(
+                      aspectRatio: _controller!.value.aspectRatio,
+                      child: VideoPlayer(_controller!),
+                    )
+                  : _webView ?? Container())),
     );
   }
 }
