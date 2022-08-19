@@ -19,6 +19,7 @@ class _SearchButtonState extends State<SearchButton> {
   var isSearchFocus = false;
 
   void _onSearchFocus(bool value) {
+    print('_onSearchFocus');
     if (widget.onFocus != null) {
       widget.onFocus!(value);
     }
@@ -30,31 +31,25 @@ class _SearchButtonState extends State<SearchButton> {
     print('_onSearchFocus');
   }
 
-  KeyEventResult _onKey(FocusNode node, RawKeyEvent event) {
-    if (ACCEPT_KEYS.contains(event.logicalKey)) {
-      widget.onSearch();
-    }
-    return KeyEventResult.ignored;
+  void _onTap() {
+    widget.onSearch();
   }
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => {widget.onSearch()},
-      child: Container(
-          padding: EdgeInsets.all(isSearchFocus ? 20.0 : 15.0),
-          decoration: const BoxDecoration(
-              color: Colors.red,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.grey, offset: Offset(1.0, 0.0), blurRadius: 1)
-              ]),
-          child: Focus(
-            onFocusChange: _onSearchFocus,
-            onKey: _onKey,
-            child: const Icon(Icons.search, color: Colors.white),
-          )),
-    );
+    return Container(
+        padding: EdgeInsets.all(isSearchFocus ? 20.0 : 15.0),
+        decoration: const BoxDecoration(
+            color: Colors.red,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey, offset: Offset(1.0, 0.0), blurRadius: 1)
+            ]),
+        child: InkWell(
+          onFocusChange: _onSearchFocus,
+          onTap: _onTap,
+          child: const Icon(Icons.search, color: Colors.white),
+        ));
   }
 }

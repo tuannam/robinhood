@@ -38,6 +38,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _onSearchFocus(bool value) {
+    print('_onSearchFocus');
     if (value) {
       scrollController.animateTo(0,
           duration: const Duration(milliseconds: 200), curve: Curves.linear);
