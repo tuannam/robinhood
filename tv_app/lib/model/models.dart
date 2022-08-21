@@ -54,13 +54,27 @@ class MovieDetails {
   final String content;
 
   @JsonKey(name: "extra_info")
-  final List<MovieLink> links;
+  final List<ServerDetails> servers;
 
-  MovieDetails(this.title, this.image, this.content, this.links);
+  MovieDetails(this.title, this.image, this.content, this.servers);
 
   factory MovieDetails.fromJson(Map<String, dynamic> json) =>
       _$MovieDetailsFromJson(json);
   Map<String, dynamic> toJson() => _$MovieDetailsToJson(this);
+}
+
+@JsonSerializable()
+class ServerDetails {
+  @JsonKey(name: "server")
+  final String name;
+
+  @JsonKey(name: "chapters")
+  final List<MovieLink> links;
+
+  ServerDetails(this.name, this.links);
+  factory ServerDetails.fromJson(Map<String, dynamic> json) =>
+      _$ServerDetailsFromJson(json);
+  Map<String, dynamic> toJson() => _$ServerDetailsToJson(this);
 }
 
 @JsonSerializable()

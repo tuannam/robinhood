@@ -50,7 +50,7 @@ MovieDetails _$MovieDetailsFromJson(Map<String, dynamic> json) => MovieDetails(
       json['article_image'] as String,
       json['article_content'] as String,
       (json['extra_info'] as List<dynamic>)
-          .map((e) => MovieLink.fromJson(e as Map<String, dynamic>))
+          .map((e) => ServerDetails.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
@@ -59,7 +59,21 @@ Map<String, dynamic> _$MovieDetailsToJson(MovieDetails instance) =>
       'article_title': instance.title,
       'article_image': instance.image,
       'article_content': instance.content,
-      'extra_info': instance.links,
+      'extra_info': instance.servers,
+    };
+
+ServerDetails _$ServerDetailsFromJson(Map<String, dynamic> json) =>
+    ServerDetails(
+      json['server'] as String,
+      (json['chapters'] as List<dynamic>)
+          .map((e) => MovieLink.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$ServerDetailsToJson(ServerDetails instance) =>
+    <String, dynamic>{
+      'server': instance.name,
+      'chapters': instance.links,
     };
 
 MovieLink _$MovieLinkFromJson(Map<String, dynamic> json) => MovieLink(

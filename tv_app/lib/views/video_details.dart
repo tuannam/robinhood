@@ -82,17 +82,18 @@ class _VideoDetailsState extends State<VideoDetailsWidget> {
             ),
           )),
         ]);
-    final chapters = Container(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 50),
-      child: Wrap(
-          spacing: 5,
-          runSpacing: 5,
-          children: (details?.links ?? [])
-              .map((e) => ChapterButton(link: e))
-              .toList()),
-    );
+    final servers = ListView.separated(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemBuilder: (BuildContext content, int position) {
+          final server = details!.servers[position];
+          return ServerWidget(serverDetails: server);
+        },
+        separatorBuilder: (context, index) => const SizedBox.shrink(),
+        itemCount: details?.servers.length ?? 0);
+
     final column = Column(
-      children: [row1, chapters],
+      children: [row1, servers],
     );
 
     return Scaffold(
@@ -101,6 +102,36 @@ class _VideoDetailsState extends State<VideoDetailsWidget> {
             child: SingleChildScrollView(
               child: column,
             )));
+  }
+}
+
+class ServerWidget extends StatelessWidget {
+  final ServerDetails serverDetails;
+  const ServerWidget({Key? key, required this.serverDetails}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 50),
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+              child: Text(
+                serverDetails.name,
+                style: const TextStyle(color: Colors.orange),
+              ),
+            ),
+            Wrap(
+                spacing: 5,
+                runSpacing: 5,
+                children: (serverDetails.links ?? [])
+                    .map((e) => ChapterButton(link: e))
+                    .toList())
+          ]),
+    );
   }
 }
 

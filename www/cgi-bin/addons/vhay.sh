@@ -79,27 +79,34 @@ details() {
             --compressed -s)
 
     extra_info="["
-    serverCount=$(echo "$html" | xmllint --html -xpath "count(//div[ul[starts-with(@class,'list-episode')]])" - 2>/dev/null)
+    server_xpath="//div[ul[starts-with(@class,'list-episode')]]"
+    serverCount=$(echo "$html" | xmllint --html -xpath "count(${server_xpath})" - 2>/dev/null)
     serverIdx=1
 
     while [ $serverIdx -le $serverCount ]; do
-        serverItem=$(echo "$html" | xmllint --html -xpath "//div[ul[starts-with(@class,'list-episode')]][$serverIdx]" - 2>/dev/null)
-        serverName=$(echo "$html" | xmllint --html -xpath "//div[ul[starts-with(@class,'list-episode')]][$serverIdx]/h3/text()" - 2>/dev/null | sed 's/ $//' | sed 's/^ //')
-        chapterCount=$(echo "${serverItem}" | xmllint --html -xpath "count(//ul/li)" -)
+        serverName=$(echo "$html" | xmllint --html -xpath "${server_xpath}[$serverIdx]/h3/text()" - 2>/dev/null | sed 's/ $//' | sed 's/^ //' | jq -Rsa . )
+        chapterCount=$(echo "$html" | xmllint --html -xpath "count(${server_xpath}[$serverIdx]/ul/li)" - 2>/dev/null)
         chapterIdx=1
+        server_info="{ \"server\": ${serverName}, \"chapters\": ["
         while [ $chapterIdx -le $chapterCount ]; do
-            chapterItem=$(echo "${serverItem}" | xmllint --html -xpath "//ul/li[${chapterIdx}]" -)
-            link=$(echo "$chapterItem" | xmllint --html -xpath "string(//a/@href)" - | xargs basename)
-            name=$(echo "$chapterItem" | xmllint --html -xpath "//a/text()" -)
+            chapter_xpath="${server_xpath}[$serverIdx]/ul/li[${chapterIdx}]"
+            link=$(echo "$html" | xmllint --html -xpath "string(${chapter_xpath}/a/@href)" - 2>/dev/null | xargs basename)
+            name=$(echo "$html" | xmllint --html -xpath "${chapter_xpath}/a/text()" - 2>/dev/null)
 
-            if [ ${#extra_info} -gt 1 ]; then
-                 extra_info="${extra_info}, "
+            if [ $chapterIdx -gt 1 ]; then
+                 server_info="${server_info}, "
             fi
-            chapter=$(echo -en "${serverName} - Tập ${name}" | jq -Rsa .)
-            extra_info="${extra_info}{ \"name\": ${chapter}, \"link\": \"resolver-$1/${link}\" }"
+            chapter=$(echo -en "Tập ${name}" | jq -Rsa .)
+            server_info="${server_info}{ \"name\": ${chapter}, \"link\": \"resolver-$1/${link}\" }"
 
             chapterIdx=$((chapterIdx+1))
         done
+        server_info="${server_info}]}"
+
+        if [ ${#extra_info} -gt 1 ]; then
+            extra_info="${extra_info}, "
+        fi
+        extra_info="${extra_info}${server_info}"
         serverIdx=$((serverIdx+1))
     done
 
