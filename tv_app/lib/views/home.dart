@@ -1,5 +1,7 @@
+import 'dart:io' as io;
 import 'package:flutter/material.dart';
 import 'package:robinhood/components/search_button.dart';
+import 'package:robinhood/updater/updater.dart';
 import 'package:robinhood/views/search_view.dart';
 import 'package:robinhood/views/section_view.dart';
 import '../model/models.dart';
@@ -20,6 +22,10 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _loadData();
+
+    if (io.Platform.isAndroid) {
+      checkAndUpdate(context);
+    }
   }
 
   Future<void> _loadData({String id = ''}) async {
