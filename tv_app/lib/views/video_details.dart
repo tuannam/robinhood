@@ -127,7 +127,7 @@ class ServerWidget extends StatelessWidget {
             Wrap(
                 spacing: 5,
                 runSpacing: 5,
-                children: (serverDetails.links ?? [])
+                children: (serverDetails.links)
                     .map((e) => ChapterButton(link: e))
                     .toList())
           ]),

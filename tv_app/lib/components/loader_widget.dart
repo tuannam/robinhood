@@ -13,10 +13,11 @@ class LoaderView extends StatelessWidget {
       children: [
         child,
         if (showLoader)
-          const Text(
-            "Loading...",
-            style: TextStyle(color: Colors.yellow),
-          )
+          // const Text(
+          //   "Loading...",
+          //   style: TextStyle(color: Colors.yellow),
+          // )
+          const CircularProgressIndicator()
         else
           Container()
       ],
