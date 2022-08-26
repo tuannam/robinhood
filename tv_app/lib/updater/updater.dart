@@ -34,7 +34,7 @@ bool isVersionGreaterThan(String newVersion, String currentVersion) {
 }
 
 Future<String?> hasNewVersion() async {
-  const url = 'https://swiftit.net/robinhood.json';
+  const url = 'https://robinhood.swiftit.net/robinhood.json';
   final response = await http.get(Uri.parse(url));
   final object = json.decode(response.body) as Map<String, dynamic>;
   final update = Update.fromJson(object);

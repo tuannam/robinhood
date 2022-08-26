@@ -4,6 +4,8 @@ import 'package:robinhood/components/search_button.dart';
 import 'package:robinhood/updater/updater.dart';
 import 'package:robinhood/views/search_view.dart';
 import 'package:robinhood/views/section_view.dart';
+import 'package:flutter/foundation.dart';
+
 import '../model/models.dart';
 import '../service/api.dart';
 
@@ -23,7 +25,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _loadData();
 
-    if (io.Platform.isAndroid) {
+    if (defaultTargetPlatform == TargetPlatform.android) {
       checkAndUpdate(context);
     }
   }

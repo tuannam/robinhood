@@ -7,7 +7,7 @@ typedef ApiCallback = void Function(dynamic);
 
 class Api {
   final String baseUrl = kDebugMode
-      ? 'http://10.0.0.83/cgi-bin'
+      ? 'http://10.0.0.83/api'
       : 'https://robinhood.swiftit.net/cgi-bin';
   Map<String, String> get headers => {
         "Content-Type": "application/json",
@@ -19,7 +19,7 @@ class Api {
   Api._internal();
 
   Future<void> getSectionList(ApiCallback callback, {String id = ''}) async {
-    final url = '$baseUrl/section_cont.cgi?$id';
+    final url = '$baseUrl/section_cont/$id';
     final response = await http.get(Uri.parse(url), headers: headers);
     final object = json.decode(response.body) as Map<String, dynamic>;
     final tab = object['tab'] as Map<String, dynamic>;
@@ -28,7 +28,7 @@ class Api {
   }
 
   Future<void> getItems(ApiCallback callback, String next) async {
-    final url = '$baseUrl/items_cont.cgi?$next';
+    final url = '$baseUrl/items_cont/$next';
     final response = await http.get(Uri.parse(url), headers: headers);
     final object = json.decode(response.body) as Map<String, dynamic>;
     final section = Section.fromJson(object);
@@ -36,7 +36,7 @@ class Api {
   }
 
   Future<void> getMovieDetails(ApiCallback callback, String videoId) async {
-    final url = '$baseUrl/details.cgi?$videoId';
+    final url = '$baseUrl/details/$videoId';
     final response = await http.get(Uri.parse(url), headers: headers);
     final list = json.decode(response.body) as List;
     if (list.isNotEmpty) {
@@ -49,7 +49,7 @@ class Api {
   }
 
   Future<void> getRealLink(ApiCallback callback, String link) async {
-    final url = '$baseUrl/resolve.cgi?$link';
+    final url = '$baseUrl/resolve/$link';
     final response = await http.get(Uri.parse(url), headers: headers);
     final object = json.decode(response.body) as Map<String, dynamic>;
     final realUrl = object['url'];
@@ -57,7 +57,7 @@ class Api {
   }
 
   Future<void> search(ApiCallback callback, String keyword) async {
-    final url = '$baseUrl/search.cgi?${Uri.encodeComponent(keyword)}';
+    final url = '$baseUrl/search/${Uri.encodeComponent(keyword)}';
     final response = await http.get(Uri.parse(url), headers: headers);
     final results = json.decode(response.body) as List<dynamic>;
     final movies = results.map((e) => Movie.fromJson(e)).toList();
