@@ -6,7 +6,7 @@ echo ''
 read -r -d '' DATA <<- EOM
 {
     "version": "1.0.2",
-    "url": "https://robinhood.swiftti.net/download/rh-1.0.2.apk"
+    "url": "https://robinhood.swiftit.net/download/rh-1.0.2.apk"
 }
 EOM
 
