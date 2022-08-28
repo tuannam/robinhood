@@ -6,9 +6,8 @@ import 'package:flutter/foundation.dart';
 typedef ApiCallback = void Function(dynamic);
 
 class Api {
-  final String baseUrl = kDebugMode
-      ? 'http://10.0.0.83/api'
-      : 'https://robinhood.swiftit.net/cgi-bin';
+  final String baseUrl =
+      kDebugMode ? 'http://10.0.0.83/api' : 'https://robinhood.swiftit.net/api';
   Map<String, String> get headers => {
         "Content-Type": "application/json",
         "X-MOVIE-SITE": "vhay",
