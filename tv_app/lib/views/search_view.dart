@@ -15,6 +15,8 @@ class _SearchViewState extends State<SearchView> {
   List<Movie>? _movies;
   late FocusNode _keywordFocusNode;
   var busy = false;
+  var newKeyword = "";
+  var currentKeyword = "";
 
   @override
   void initState() {
@@ -29,15 +31,22 @@ class _SearchViewState extends State<SearchView> {
   }
 
   void _onChanged(String value) {
-    if (!busy) {
+    if (!busy && value != currentKeyword) {
       busy = true;
 
       Api.shared.search((p0) {
         setState(() {
           _movies = p0 as List<Movie>;
         });
+        currentKeyword = value;
         busy = false;
       }, value);
+    } else {
+      if (value != newKeyword) {
+        newKeyword = value;
+        Future.delayed(
+            const Duration(seconds: 2), () => {_onChanged(newKeyword)});
+      }
     }
   }
 
