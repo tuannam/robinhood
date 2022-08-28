@@ -1,10 +1,22 @@
 <html>
   <head>
     <script src="https://cdn.jwplayer.com/libraries/2vQP28Pg.js"></script>
-  </head>
+    <style>
+      body{
+      margin-top: 0px; 
+      margin-bottom: 0px; 
+      margin-left: 0px; 
+      margin-right: 0px;
+      padding: 0;
+      color: black; 
+      font-size: 10pt; 
+      font-family: "Trebuchet MS", sans-serif;
+      background-color: black;
+    }
+    </style>
+  </head>  
   <body>
     <div id="player"></div>
-
     <script type="text/JavaScript">
       console.log(window.location.href);
       var mediaUrl = window.location.href.replace(/.*\/\/[^\/]*\/jwplayer.html\?/, '');
