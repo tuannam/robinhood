@@ -39,6 +39,12 @@ class _PlayerWidgetState extends State<PlayerWidget> {
       setState(() {
         _webView = WebViewWidget(url: mediaUrl);
       });
+    } else if (mediaUrl.contains("/animevhay/")) {
+      final url = "${Api.shared.baseUrl}/../jwplayer.html?$mediaUrl";
+      print('cors url: $url');
+      setState(() {
+        _webView = WebViewWidget(url: url);
+      });
     } else {
       print('oxoplayer');
       // _videoPlayer = VideoPlayerWidget(mediaUrl: mediaUrl);

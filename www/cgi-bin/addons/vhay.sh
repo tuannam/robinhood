@@ -179,6 +179,17 @@ resolve() {
             --compressed -s )
 
     url=$(echo "$html" | sed 's/.*<iframe//' | sed "s/.*src='//" | sed 's/.*src="//' | sed "s/'.*//" | sed 's/".*//')
+
+    if [[ $url == https://play.animevhay.xyz* ]] ; then
+        id=$(echo "$url" | sed 's/.*id=//')
+        base="${HTTP_HOST}"
+        if [ "$SERVER_PORT" == "443" ]; then
+            url="https://${base}/animevhay/player/$id/playlist.m3u8?v=10"
+        else
+            url="http://${base}/animevhay/player/$id/playlist.m3u8?v=10"
+        fi
+    fi
+
     echo "{\"url\": \"${url}\", \"type\": \"video/mp4\", \"player\": \"ok.ru\"}"
 
     # response=$(curl "$url" \

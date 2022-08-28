@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <script src="https://cdn.jwplayer.com/libraries/2vQP28Pg.js"></script>
+  </head>
+  <body>
+    <div id="player"></div>
+
+    <script type="text/JavaScript">
+      console.log(window.location.href);
+      var mediaUrl = window.location.href.replace(/.*\/\/[^\/]*\/jwplayer.html\?/, '');
+      console.log(`mediaUrl: '${mediaUrl}'`);
+
+      jwplayer("player").setup({ 
+                    "playlist": [{
+                        "file": `${mediaUrl}`
+                    }],
+                    autostart: true,
+                    width: "100%",
+                    height: "100%"
+                });    
+    </script>
+
+  </body>
+</html>

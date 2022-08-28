@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:robinhood/service/api.dart';
 import '../model/update.dart';
 
 Future<String> download(String url, String filename) async {
@@ -34,7 +35,7 @@ bool isVersionGreaterThan(String newVersion, String currentVersion) {
 }
 
 Future<String?> hasNewVersion() async {
-  const url = 'https://robinhood.swiftit.net/robinhood.json';
+  final url = "${Api.shared.baseUrl}/updater";
   final response = await http.get(Uri.parse(url));
   final object = json.decode(response.body) as Map<String, dynamic>;
   final update = Update.fromJson(object);
