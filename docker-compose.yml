@@ -1,0 +1,12 @@
+version: '3'
+services:
+  nginx:
+   build: .
+   restart: unless-stopped
+   container_name: nginx
+   ports:
+     - "80-90:80-90"
+   volumes:
+     - ./data/conf.d:/etc/nginx/conf.d
+     - ../robinhood/www:/data/www/robinhood
+     - ../smartdns:/data/smartdns
