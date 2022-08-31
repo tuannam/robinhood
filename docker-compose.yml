@@ -5,8 +5,7 @@ services:
    restart: unless-stopped
    container_name: nginx
    ports:
-     - "80-90:80-90"
+     - "80:80"
    volumes:
      - ./data/conf.d:/etc/nginx/conf.d
      - ../robinhood/www:/data/www/robinhood
-     - ../smartdns:/data/smartdns
