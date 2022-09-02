@@ -3,13 +3,20 @@ import 'package:robinhood/service/api.dart';
 import 'package:robinhood/views/video_card.dart';
 import '../model/models.dart';
 
+typedef OPEN_DRAWER = void Function();
+
 class SectionWidget extends StatefulWidget {
+  final OPEN_DRAWER openDrawer;
   final String category;
   final List<Movie> movies;
   final String? next;
 
   const SectionWidget(
-      {Key? key, required this.category, required this.movies, this.next})
+      {Key? key,
+      required this.openDrawer,
+      required this.category,
+      required this.movies,
+      this.next})
       : super(key: key);
 
   @override
@@ -23,12 +30,14 @@ class _SectionWidgetState extends State<SectionWidget> {
   @override
   void initState() {
     super.initState();
-    this.next = widget.next;
+    next = widget.next;
 
     _controller.addListener(() {
       if (_controller.position.atEdge) {
         bool isLeft = _controller.position.pixels == 0;
-        if (!isLeft) {
+        if (isLeft) {
+          widget.openDrawer();
+        } else {
           // isRight
           print('Reach End.');
           loadNext();
