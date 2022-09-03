@@ -41,7 +41,7 @@ movies_in_category() {
     while [ $idx -le $count ]; do        
         title=$(echo "$html" | xmllint --html -xpath "//li[@class='TPostMv'][$idx]/article/a/h2/text()" - 2>/dev/null)
         image=$(echo "$html" | xmllint --html -xpath "string(//li[@class='TPostMv'][$idx]/article/a/div/figure/img/@src)" - 2>/dev/null)
-        code=$(echo "$html" | xmllint --html -xpath "string(//li[@class='TPostMv'][$idx]/article/a/@href)" - 2>/dev/null | cut -c 23-)
+        code=$(echo "$html" | xmllint --html -xpath "string(//li[@class='TPostMv'][$idx]/article/a/@href)" - 2>/dev/null | cut -c 26-)
         title1=$(echo "${title}" | cut -d':' -f1)
         title2=$(echo "${title}" | cut -d':' -f2 | xargs)
         if [ $idx -ne 1 ]; then
@@ -73,6 +73,7 @@ details() {
     escaped_content=$(urldecode "${content}" | sed 's/<.*>//g' | jq -Rsa . )
 
     url="${BASE_URL}phim/$1/xem-phim.html"
+	# echo "$url"
     html=$(curl "${url}" \
             -H "referer: ${BASE_URL}' \
             -H user-agent: ${USER_AGENT}" \
