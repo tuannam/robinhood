@@ -1,10 +1,13 @@
 // ignore_for_file: unnecessary_new
 
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'views/home.dart';
+import 'service/http_overrides.dart';
 
 void main() {
+  HttpOverrides.global = MyHttpOverrides();
   runApp(const MyApp());
 }
 
