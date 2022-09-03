@@ -2,7 +2,7 @@
 
 source ./lib/common.sh
 
-BASE_URL="https://vhay.net/"
+BASE_URL="https://hayghe.club/"
 USER_AGENT='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
 
 list_categories() {
@@ -31,7 +31,7 @@ movies_in_category() {
     fi
 
     html=$(curl "${url}" \
-    -H 'referer: https://vhay.net/' \
+    -H "referer: ${BASE_URL}" \
     -H "user-agent: ${USER_AGENT}" \
     --compressed -s)
 
@@ -127,7 +127,7 @@ details() {
 
 search() {
     keyword="$1"
-    html=$(curl "https://vhay.net/tim-kiem/${keyword}/" \
+    html=$(curl "${BASE_URL}/tim-kiem/${keyword}/" \
         -H "referer: ${BASE_URL}" \
         -H "user-agent: ${USER_AGENT}" \
         --compressed -s)
