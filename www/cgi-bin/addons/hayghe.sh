@@ -98,7 +98,7 @@ details() {
                  server_info="${server_info}, "
             fi
             chapter=$(echo -en "Tập ${name}" | jq -Rsa .)
-            server_info="${server_info}{ \"name\": ${chapter}, \"link\": \"resolver-$1/${link}\" }"
+            server_info="${server_info}{ \"name\": ${chapter}, \"link\": \"resolver-$1${link}\" }"
 
             chapterIdx=$((chapterIdx+1))
         done
@@ -172,8 +172,8 @@ resolve() {
     episodeID=$(echo "${html}" | grep "filmInfo.episodeID =" | cut -d"'" -f2)
     filmID=$(echo "${html}" | grep "filmInfo.filmID =" | cut -d"'" -f2)
     playTech=$(echo "${html}" | grep "filmInfo.playTech =" | cut -d"'" -f2)
-    
-    html=$(curl 'https://vhay.net/ajax' \
+
+    html=$(curl "${BASE_URL}ajax" \
             -H "referer: ${BASE_URL}" \
             -H "user-agent: ${USER_AGENT}" \
             --data-raw "NextEpisode=1&EpisodeID=${episodeID}&filmID=${filmID}&playTech=${playTech}" \

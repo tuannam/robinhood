@@ -4,20 +4,14 @@ const loadMovie = (code) => {
     getJSON(`/cgi-bin/details.cgi?${code}`, function(movies) {  
         console.log(movies);
         let movie = movies[0];
-        let chapters = ""
-        movie['extra_info'].forEach(chapter => {
-            chapters += `<span class="chapter">`
-            let url = chapter["link"].trim();
-            chapters += `<a href="/?play/${encodeURIComponent(url)}">${chapter["name"]}</a>`
-            if (chapter["link2"]) {
-                let url2 = chapter["link2"].trim();
-                chapters += `&nbsp;&nbsp;<a href="/?play/${encodeURIComponent(url2)}">Link 2</a>`
-            }
-            if (chapter["link3"]) {
-                let url3 = chapter["link3"].trim();
-                chapters += `&nbsp;&nbsp;<a href="/?play/${encodeURIComponent(url3)}">Link 3</a>`
-            }
-            chapter += `</span>`
+        let servers = ""
+        movie['extra_info'].forEach(server => {
+            servers += `<span class="server">`
+			server['chapters'].forEach(chapter => {
+	            let url = chapter["link"].trim();
+	            servers += `<a href="/?play/${encodeURIComponent(url)}">${chapter["name"]}</a>`
+			});
+            servers += `</span>`
         });
         box.innerHTML = 
         `<table>
@@ -36,7 +30,7 @@ const loadMovie = (code) => {
             </tr>
             <tr><td width="250">${movie.article_content}</td></tr>
             <tr>
-                <td>${chapters}</td>
+                <td>${servers}</td>
             </tr>
         </table>
         <br>
