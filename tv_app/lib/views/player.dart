@@ -47,10 +47,12 @@ class _PlayerWidgetState extends State<PlayerWidget> {
         _webView = WebViewWidget(url: url);
       });
     } else {
-      print('oxoplayer');
+      print('oxoplayer: ${mediaUrl}');
       // _videoPlayer = VideoPlayerWidget(mediaUrl: mediaUrl);
-      _controller = VideoPlayerController.network(mediaUrl)
-        ..initialize().then((_) {
+      _controller = VideoPlayerController.network(
+        mediaUrl,
+        // httpHeaders: {'referer': 'https://hayghe.club'}
+      )..initialize().then((_) {
           setState(() {
             _controller?.play();
           });

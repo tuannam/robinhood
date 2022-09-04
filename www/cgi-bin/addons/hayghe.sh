@@ -183,6 +183,7 @@ resolve() {
 
     if [[ $url == https://play.animevhay.xyz* ]] ; then
         id=$(echo "$url" | sed 's/.*id=//')
+		# url="https://play.animevhay.xyz/player/${id}/playlist.m3u8?v=10"
         base="${HTTP_HOST}"
         if [ "$SERVER_PORT" == "443" ]; then
             url="https://${base}/animevhay/player/$id/playlist.m3u8?v=10"
