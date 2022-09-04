@@ -5,14 +5,17 @@ import '../model/models.dart';
 import '../common.dart';
 
 typedef IS_LAST_WIDGET = bool Function(int index);
+typedef OPEN_DRAWER = void Function();
 
 class VideoCard extends StatefulWidget {
+  final OPEN_DRAWER openDrawer;
   final Movie movie;
   final int index;
   final IS_LAST_WIDGET isLast;
 
   const VideoCard(
       {Key? key,
+      required this.openDrawer,
       required this.movie,
       required this.index,
       required this.isLast})
@@ -25,6 +28,7 @@ class VideoCard extends StatefulWidget {
 class _VideoCardState extends State<VideoCard> {
   final _titleFont = const TextStyle(fontSize: 10.0, color: Colors.white);
   var isFocus = false;
+  var lastLeftTapped = DateTime.now().millisecondsSinceEpoch;
 
   void _onFocus(bool value) {
     setState(() {
@@ -38,6 +42,15 @@ class _VideoCardState extends State<VideoCard> {
       return KeyEventResult.handled;
     } else if (event.logicalKey == LogicalKeyboardKey.arrowRight &&
         widget.isLast(widget.index)) {
+      return KeyEventResult.handled;
+    } else if (event.logicalKey == LogicalKeyboardKey.arrowLeft &&
+        widget.index == 0) {
+      var delta = DateTime.now().millisecondsSinceEpoch - lastLeftTapped;
+      if (delta > 2000) {
+        // widget.openDrawer();
+      }
+      lastLeftTapped = DateTime.now().millisecondsSinceEpoch;
+
       return KeyEventResult.handled;
     } else {
       return KeyEventResult.ignored;

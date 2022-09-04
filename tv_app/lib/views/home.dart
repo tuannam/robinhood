@@ -5,7 +5,7 @@ import 'package:robinhood/views/search_view.dart';
 import 'package:robinhood/views/section_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:robinhood/views/settings_view.dart';
-
+import 'package:robinhood/views/video_card.dart';
 import '../model/models.dart';
 import '../service/api.dart';
 

@@ -61,6 +61,7 @@ class _SearchViewState extends State<SearchView> {
       spacing: 5,
       children: (_movies ?? [])
           .map((e) => VideoCard(
+                openDrawer: () {},
                 movie: e,
                 index: -1,
                 isLast: (index) {

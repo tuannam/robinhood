@@ -3,8 +3,6 @@ import 'package:robinhood/service/api.dart';
 import 'package:robinhood/views/video_card.dart';
 import '../model/models.dart';
 
-typedef OPEN_DRAWER = void Function();
-
 class SectionWidget extends StatefulWidget {
   final OPEN_DRAWER openDrawer;
   final String category;
@@ -36,7 +34,7 @@ class _SectionWidgetState extends State<SectionWidget> {
       if (_controller.position.atEdge) {
         bool isLeft = _controller.position.pixels == 0;
         if (isLeft) {
-          widget.openDrawer();
+          // widget.openDrawer();
         } else {
           // isRight
           print('Reach End.');
@@ -84,6 +82,7 @@ class _SectionWidgetState extends State<SectionWidget> {
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext content, int position) {
                 return VideoCard(
+                  openDrawer: widget.openDrawer,
                   movie: widget.movies[position],
                   index: position,
                   isLast: isLastWidget,
