@@ -98,7 +98,7 @@ details() {
                  server_info="${server_info}, "
             fi
             chapter=$(echo -en "Tập ${name}" | jq -Rsa .)
-            server_info="${server_info}{ \"name\": ${chapter}, \"link\": \"resolver-$1${link}\" }"
+            server_info="${server_info}{ \"name\": ${chapter}, \"link\": \"resolver-$1/${link}\" }"
 
             chapterIdx=$((chapterIdx+1))
         done

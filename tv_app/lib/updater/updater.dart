@@ -11,7 +11,9 @@ import '../model/update.dart';
 Future<String> download(String url, String filename) async {
   String dir = (await getTemporaryDirectory()).path;
   File file = File('$dir/$filename');
-  if (await file.exists()) return file.path;
+  if (await file.exists()) {
+    file.delete();
+  }
   await file.create(recursive: true);
   var response =
       await http.get(Uri.parse(url)).timeout(const Duration(seconds: 60));
