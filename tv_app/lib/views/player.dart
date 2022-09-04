@@ -34,12 +34,13 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   }
 
   void play(String mediaUrl) {
-    if (mediaUrl.contains('ok.ru')) {
-      print('webview');
-      setState(() {
-        _webView = WebViewWidget(url: mediaUrl);
-      });
-    } else if (mediaUrl.contains("/animevhay/")) {
+    // if (mediaUrl.contains('ok.ru')) {
+    //   print('webview');
+    //   setState(() {
+    //     _webView = WebViewWidget(url: mediaUrl);
+    //   });
+    // } else
+    if (mediaUrl.contains("/animevhay/")) {
       final url = "${Api.shared.baseUrl}/../jwplayer.html?$mediaUrl";
       print('cors url: $url');
       setState(() {

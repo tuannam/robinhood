@@ -189,17 +189,16 @@ resolve() {
         else
             url="http://${base}/animevhay/player/$id/playlist.m3u8?v=10"
         fi
+	    echo "{\"url\": \"${url}\", \"type\": \"video/mp4\", \"player\": \"ok.ru\"}"
+	else
+	    response=$(curl "$url" \
+	                -H 'authority: ok.ru' \
+	                # -H "user-agent: ${USER_AGENT}" \
+	                --compressed -s
+	                )
+	    resolved=$(echo "$response" | grep "data-options=" | sed 's/.*data-options=\"//' | sed 's/\".*//' | sed 's/.*u003Ehttps:/https:/g' | sed 's/\\\\u0026/\&/g' | sed 's/\&amp;/\&/g' | sed 's/\\\\.*//g')
+
+	    echo "{\"url\": \"${resolved}\", \"type\": \"video/mp4\", \"player\": \"ok.ru\"}"		
     fi
-
-    echo "{\"url\": \"${url}\", \"type\": \"video/mp4\", \"player\": \"ok.ru\"}"
-
-    # response=$(curl "$url" \
-    #             -H 'authority: ok.ru' \
-    #             -H "user-agent: ${USER_AGENT}" \
-    #             --compressed -s  
-    #             )
-    # resolved=$(echo "$response" | grep "data-options=" | sed 's/.*data-options=\"//' | sed 's/\".*//' | sed 's/.*u003Ehttps:/https:/g' | sed 's/\\\\u0026/\&/g' | sed 's/\&amp;/\&/g' | sed 's/\\\\.*//g')
-
-    # echo "{\"url\": \"${resolved}\", \"type\": \"video/mp4\", \"player\": \"ok.ru\"}"
 }
 
