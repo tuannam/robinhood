@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:robinhood/components/loader_widget.dart';
 import 'package:robinhood/service/api.dart';
 import 'package:robinhood/views/video_player.dart';
@@ -19,6 +20,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   VideoPlayerWidget? _videoPlayer;
   VideoPlayerController? _controller;
   var loading = true;
+  Map<String, String> headers = {};
 
   @override
   void initState() {
@@ -40,24 +42,25 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     //     _webView = WebViewWidget(url: mediaUrl);
     //   });
     // } else
-    if (mediaUrl.contains("/animevhay/")) {
-      final url = "${Api.shared.baseUrl}/../jwplayer.html?$mediaUrl";
-      print('cors url: $url');
-      setState(() {
-        _webView = WebViewWidget(url: url);
-      });
-    } else {
-      print('oxoplayer: ${mediaUrl}');
-      // _videoPlayer = VideoPlayerWidget(mediaUrl: mediaUrl);
-      _controller = VideoPlayerController.network(
-        mediaUrl,
-        // httpHeaders: {'referer': 'https://hayghe.club'}
-      )..initialize().then((_) {
-          setState(() {
-            _controller?.play();
-          });
-        });
+    // if (mediaUrl.contains("/animevhay/")) {
+    //   final url = "${Api.shared.baseUrl}/../jwplayer.html?$mediaUrl";
+    //   print('cors url: $url');
+    //   setState(() {
+    //     _webView = WebViewWidget(url: url);
+    //   });
+    // } else {
+    if (mediaUrl.contains("animevhay")) {
+      headers = {'referer': 'https://hayghe.club'};
     }
+    print('oxoplayer: ${mediaUrl}');
+    // _videoPlayer = VideoPlayerWidget(mediaUrl: mediaUrl);
+    _controller = VideoPlayerController.network(mediaUrl, httpHeaders: headers)
+      ..initialize().then((_) {
+        setState(() {
+          _controller?.play();
+        });
+      });
+    // }
   }
 
   @override

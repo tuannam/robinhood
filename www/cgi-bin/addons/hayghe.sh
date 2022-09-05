@@ -172,34 +172,37 @@ resolve() {
     episodeID=$(echo "${html}" | grep "filmInfo.episodeID =" | cut -d"'" -f2)
     filmID=$(echo "${html}" | grep "filmInfo.filmID =" | cut -d"'" -f2)
     playTech=$(echo "${html}" | grep "filmInfo.playTech =" | cut -d"'" -f2)
-
+	# echo "episodeID: $episodeID filmID: $filmID"
 
     html=$(curl "${BASE_URL}ajax" \
             -H "referer: ${BASE_URL}" \
             -H "user-agent: ${USER_AGENT}" \
             --data-raw "NextEpisode=1&EpisodeID=${episodeID}&filmID=${filmID}&playTech=${playTech}" \
             --compressed -s )
+	# echo "$html"
 
     url=$(echo "$html" | sed 's/.*<iframe//' | sed "s/.*src='http/http/" | sed 's/.*src="//' | sed "s/'.*//" | sed 's/".*//')
 
     if [[ $url == https://play.animevhay.xyz* ]] ; then
         id=$(echo "$url" | sed 's/.*id=//')
-		# url="https://play.animevhay.xyz/player/${id}/playlist.m3u8?v=10"
-        base="${HTTP_HOST}"
-        if [ "$SERVER_PORT" == "443" ]; then
-            url="https://${base}/animevhay/player/$id/playlist.m3u8?v=10"
-        else
-            url="http://${base}/animevhay/player/$id/playlist.m3u8?v=10"
-        fi
+		url="https://play.animevhay.xyz/player/${id}/playlist.m3u8?v=10"
+        # base="${HTTP_HOST}"
+        # if [ "$SERVER_PORT" == "443" ]; then
+        #     url="https://${base}/animevhay/player/$id/playlist.m3u8?v=10"
+        # else
+        #     url="http://${base}/animevhay/player/$id/playlist.m3u8?v=10"
+        # fi
 	    echo "{\"url\": \"${url}\", \"type\": \"video/mp4\", \"player\": \"ok.ru\"}"
+		exit 0
 	else
+		# echo "$url"
 	    response=$(curl "$url" \
 	                -H 'authority: ok.ru' \
 	                --compressed -s
 	                )
 	    resolved=$(echo "$response" | grep "data-options=" | sed 's/.*data-options=\"//' | sed 's/\".*//' | sed 's/.*u003Ehttps:/https:/g' | sed 's/\\\\u0026/\&/g' | sed 's/\&amp;/\&/g' | sed 's/\\\\.*//g')
 
-	    echo "{\"url\": \"${resolved}\", \"type\": \"video/mp4\", \"player\": \"ok.ru\"}"		
+	    echo "{\"url\": \"${resolved}\", \"type\": \"video/mp4\", \"player\": \"ok.ru\"}"
     fi
 }
 
