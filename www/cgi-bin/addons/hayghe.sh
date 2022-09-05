@@ -194,7 +194,6 @@ resolve() {
 	else
 	    response=$(curl "$url" \
 	                -H 'authority: ok.ru' \
-	                # -H "user-agent: ${USER_AGENT}" \
 	                --compressed -s
 	                )
 	    resolved=$(echo "$response" | grep "data-options=" | sed 's/.*data-options=\"//' | sed 's/\".*//' | sed 's/.*u003Ehttps:/https:/g' | sed 's/\\\\u0026/\&/g' | sed 's/\&amp;/\&/g' | sed 's/\\\\.*//g')
