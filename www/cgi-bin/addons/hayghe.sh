@@ -173,13 +173,14 @@ resolve() {
     filmID=$(echo "${html}" | grep "filmInfo.filmID =" | cut -d"'" -f2)
     playTech=$(echo "${html}" | grep "filmInfo.playTech =" | cut -d"'" -f2)
 
+
     html=$(curl "${BASE_URL}ajax" \
             -H "referer: ${BASE_URL}" \
             -H "user-agent: ${USER_AGENT}" \
             --data-raw "NextEpisode=1&EpisodeID=${episodeID}&filmID=${filmID}&playTech=${playTech}" \
             --compressed -s )
 
-    url=$(echo "$html" | sed 's/.*<iframe//' | sed "s/.*src='//" | sed 's/.*src="//' | sed "s/'.*//" | sed 's/".*//')
+    url=$(echo "$html" | sed 's/.*<iframe//' | sed "s/.*src='http/http/" | sed 's/.*src="//' | sed "s/'.*//" | sed 's/".*//')
 
     if [[ $url == https://play.animevhay.xyz* ]] ; then
         id=$(echo "$url" | sed 's/.*id=//')
