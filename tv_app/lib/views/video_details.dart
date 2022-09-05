@@ -167,16 +167,15 @@ class _ChapterButtonState extends State<ChapterButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Focus(
-        onFocusChange: _onFocus,
-        child: Container(
-          color: isFocus ? Colors.yellow : Colors.transparent,
-          child: TextButton(
-              onPressed: () => {_onPressed(context)},
-              child: Text(
-                widget.link.name,
-                style: _chapterFont,
-              )),
-        ));
+    return Container(
+      color: isFocus ? Colors.yellow : Colors.transparent,
+      child: TextButton(
+          onFocusChange: _onFocus,
+          onPressed: () => {_onPressed(context)},
+          child: Text(
+            widget.link.name,
+            style: _chapterFont,
+          )),
+    );
   }
 }

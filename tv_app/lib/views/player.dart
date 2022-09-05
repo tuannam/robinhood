@@ -3,8 +3,8 @@ import 'package:http/http.dart';
 import 'package:robinhood/components/loader_widget.dart';
 import 'package:robinhood/service/api.dart';
 import 'package:robinhood/views/video_player.dart';
-import 'package:robinhood/views/webview_player.dart';
 import 'package:video_player/video_player.dart';
+import 'package:wakelock/wakelock.dart';
 
 class PlayerWidget extends StatefulWidget {
   final String link;
@@ -16,7 +16,6 @@ class PlayerWidget extends StatefulWidget {
 }
 
 class _PlayerWidgetState extends State<PlayerWidget> {
-  WebViewWidget? _webView;
   VideoPlayerWidget? _videoPlayer;
   VideoPlayerController? _controller;
   var loading = true;
@@ -24,6 +23,8 @@ class _PlayerWidgetState extends State<PlayerWidget> {
 
   @override
   void initState() {
+    Wakelock.enable();
+
     super.initState();
     print('Playing ${widget.link} ...');
     Api.shared.getRealLink((p0) {
@@ -36,24 +37,10 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   }
 
   void play(String mediaUrl) {
-    // if (mediaUrl.contains('ok.ru')) {
-    //   print('webview');
-    //   setState(() {
-    //     _webView = WebViewWidget(url: mediaUrl);
-    //   });
-    // } else
-    // if (mediaUrl.contains("/animevhay/")) {
-    //   final url = "${Api.shared.baseUrl}/../jwplayer.html?$mediaUrl";
-    //   print('cors url: $url');
-    //   setState(() {
-    //     _webView = WebViewWidget(url: url);
-    //   });
-    // } else {
     if (mediaUrl.contains("animevhay")) {
       headers = {'referer': 'https://hayghe.club'};
     }
     print('oxoplayer: ${mediaUrl}');
-    // _videoPlayer = VideoPlayerWidget(mediaUrl: mediaUrl);
     _controller = VideoPlayerController.network(mediaUrl, httpHeaders: headers)
       ..initialize().then((_) {
         setState(() {
@@ -67,6 +54,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   void dispose() {
     super.dispose();
     _controller?.dispose();
+    Wakelock.disable();
   }
 
   @override
@@ -80,7 +68,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                       aspectRatio: _controller!.value.aspectRatio,
                       child: VideoPlayer(_controller!),
                     )
-                  : _webView ?? Container())),
+                  : Container())),
     );
   }
 }
