@@ -1,5 +1,6 @@
-import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
+import 'package:wakelock/wakelock.dart';
 
 class VideoPlayerWidget extends StatefulWidget {
   final String mediaUrl;
@@ -12,29 +13,30 @@ class VideoPlayerWidget extends StatefulWidget {
 
 class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   late VideoPlayerController _controller;
-  Widget? _videoWidget;
+  Map<String, String> headers = {};
 
   @override
   void initState() {
-    print('333333333. Playing ${widget.mediaUrl}');
     super.initState();
-  }
 
-  @override
-  void didUpdateWidget(covariant VideoPlayerWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    print('222222222222. Playing ${widget.mediaUrl}');
-    _controller = VideoPlayerController.network(widget.mediaUrl)
-      ..initialize().then((_) {
-        setState(() {});
-      });
+    if (widget.mediaUrl.contains("animevhay")) {
+      headers = {'referer': 'https://hayghe.club'};
+    }
+    _controller =
+        VideoPlayerController.network(widget.mediaUrl, httpHeaders: headers)
+          ..initialize().then((_) {
+            Wakelock.enable();
+            setState(() {
+              _controller.play();
+            });
+          });
   }
 
   @override
   void dispose() {
-    super.dispose();
+    Wakelock.disable();
     _controller.dispose();
+    super.dispose();
   }
 
   @override
