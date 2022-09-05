@@ -37,6 +37,8 @@ class _VideoCardState extends State<VideoCard> {
   }
 
   KeyEventResult _onKey(FocusNode node, RawKeyEvent event) {
+    print('onKey: ${event.logicalKey}');
+
     if (ACCEPT_KEYS.contains(event.logicalKey)) {
       navToDetails();
       return KeyEventResult.handled;

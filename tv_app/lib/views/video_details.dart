@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:robinhood/components/loader_widget.dart';
 import '../model/models.dart';
 import '../service/api.dart';
+import '../common.dart';
 import 'player.dart';
 
 class VideoDetailsWidget extends StatefulWidget {
@@ -145,7 +146,6 @@ class ChapterButton extends StatefulWidget {
 }
 
 class _ChapterButtonState extends State<ChapterButton> {
-  final _chapterFont = const TextStyle(fontSize: 18.0);
   bool isFocus = false;
 
   void _onFocus(bool value) {
@@ -160,23 +160,34 @@ class _ChapterButtonState extends State<ChapterButton> {
     }));
   }
 
-  Future<void> _onPressed(BuildContext context) async {
-    print('onPressed');
+  void _onTap() {
+    print('onTap');
     play(widget.link.link);
+  }
+
+  KeyEventResult _onKey(FocusNode node, RawKeyEvent event) {
+    if (ACCEPT_KEYS.contains(event.logicalKey)) {
+      _onTap();
+    }
+    return KeyEventResult.ignored;
   }
 
   @override
   Widget build(BuildContext context) {
     return Focus(
         onFocusChange: _onFocus,
-        child: Container(
-          color: isFocus ? Colors.yellow : Colors.transparent,
-          child: TextButton(
-              onPressed: () => {_onPressed(context)},
-              child: Text(
-                widget.link.name,
-                style: _chapterFont,
-              )),
+        onKey: _onKey,
+        child: InkWell(
+          onTap: _onTap,
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            color: isFocus ? Colors.yellow : Colors.transparent,
+            child: Text(
+              widget.link.name,
+              style: TextStyle(
+                  fontSize: 18.0, color: isFocus ? Colors.black : Colors.white),
+            ),
+          ),
         ));
   }
 }
