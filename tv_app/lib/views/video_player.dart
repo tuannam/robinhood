@@ -1,5 +1,7 @@
-import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
+import 'package:robinhood/views/control_panel.dart';
+import 'package:video_player/video_player.dart';
+import 'package:wakelock/wakelock.dart';
 
 class VideoPlayerWidget extends StatefulWidget {
   final String mediaUrl;
@@ -12,52 +14,49 @@ class VideoPlayerWidget extends StatefulWidget {
 
 class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   late VideoPlayerController _controller;
-  Widget? _videoWidget;
+  Map<String, String> headers = {};
 
   @override
   void initState() {
-    print('333333333. Playing ${widget.mediaUrl}');
     super.initState();
-  }
 
-  @override
-  void didUpdateWidget(covariant VideoPlayerWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    print('222222222222. Playing ${widget.mediaUrl}');
-    _controller = VideoPlayerController.network(widget.mediaUrl)
-      ..initialize().then((_) {
-        setState(() {});
-      });
+    if (widget.mediaUrl.contains("animevhay")) {
+      headers = {'referer': 'https://hayghe.club'};
+    }
+    _controller =
+        VideoPlayerController.network(widget.mediaUrl, httpHeaders: headers)
+          ..initialize().then((_) {
+            Wakelock.enable();
+            setState(() {
+              _controller.play();
+            });
+          });
   }
 
   @override
   void dispose() {
     super.dispose();
+    Wakelock.disable();
     _controller.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-          child: _controller.value.isInitialized
-              ? AspectRatio(
-                  aspectRatio: _controller.value.aspectRatio,
-                  child: VideoPlayer(_controller),
-                )
-              : Container()),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            _controller.value.isPlaying
-                ? _controller.pause()
-                : _controller.play();
-          });
-        },
-        child: Icon(
-          _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-        ),
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Center(
+              child: _controller.value.isInitialized
+                  ? AspectRatio(
+                      aspectRatio: _controller.value.aspectRatio,
+                      child: VideoPlayer(_controller),
+                    )
+                  : Container()),
+          ControlPanel(
+            controller: _controller,
+          )
+        ],
       ),
     );
   }
