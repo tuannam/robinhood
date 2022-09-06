@@ -68,9 +68,14 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     });
   }
 
+  Future<bool> _onWillPop() async {
+    Navigator.of(context).pop();
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    var scaffold = Scaffold(
       body: LoaderView(
           showLoader: loading,
           child: Stack(
@@ -90,5 +95,6 @@ class _PlayerWidgetState extends State<PlayerWidget> {
             ],
           )),
     );
+    return WillPopScope(onWillPop: _onWillPop, child: scaffold);
   }
 }
