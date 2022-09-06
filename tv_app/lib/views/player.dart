@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:robinhood/components/loader_widget.dart';
 import 'package:robinhood/service/api.dart';
-import 'package:robinhood/views/video_player.dart';
+import 'package:robinhood/views/control_panel.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -16,7 +16,6 @@ class PlayerWidget extends StatefulWidget {
 }
 
 class _PlayerWidgetState extends State<PlayerWidget> {
-  VideoPlayerWidget? _videoPlayer;
   VideoPlayerController? _controller;
   var loading = true;
   Map<String, String> headers = {};
@@ -57,18 +56,39 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     Wakelock.disable();
   }
 
+  void _onPlay() {
+    setState(() {
+      _controller?.play();
+    });
+  }
+
+  void _onPause() {
+    setState(() {
+      _controller?.pause();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: LoaderView(
           showLoader: loading,
-          child: Center(
-              child: _controller != null && _controller!.value.isInitialized
-                  ? AspectRatio(
-                      aspectRatio: _controller!.value.aspectRatio,
-                      child: VideoPlayer(_controller!),
-                    )
-                  : Container())),
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              Center(
+                  child: _controller != null && _controller!.value.isInitialized
+                      ? AspectRatio(
+                          aspectRatio: _controller!.value.aspectRatio,
+                          child: VideoPlayer(_controller!),
+                        )
+                      : Container()),
+              ControlPanel(
+                  isPlaying: _controller?.value.isPlaying ?? false,
+                  onPause: _onPause,
+                  onPlay: _onPlay)
+            ],
+          )),
     );
   }
 }
