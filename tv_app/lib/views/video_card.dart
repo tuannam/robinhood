@@ -29,6 +29,7 @@ class _VideoCardState extends State<VideoCard> {
   final _titleFont = const TextStyle(fontSize: 10.0, color: Colors.white);
   var isFocus = false;
   var lastLeftTapped = DateTime.now().millisecondsSinceEpoch;
+  var lastShowDetails = DateTime.now().millisecondsSinceEpoch;
 
   void _onFocus(bool value) {
     setState(() {
@@ -60,9 +61,13 @@ class _VideoCardState extends State<VideoCard> {
   }
 
   void navToDetails() {
+    if (DateTime.now().millisecondsSinceEpoch - lastShowDetails < 1000) {
+      return;
+    }
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return VideoDetailsWidget(videoId: widget.movie.code ?? '');
     }));
+    lastShowDetails = DateTime.now().millisecondsSinceEpoch;
   }
 
   @override
