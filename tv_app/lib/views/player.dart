@@ -63,15 +63,31 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     Wakelock.disable();
   }
 
-  void _onPlay() {
+  void _play() {
     setState(() {
       _controller?.play();
     });
   }
 
-  void _onPause() {
+  void _pause() {
     setState(() {
       _controller?.pause();
+    });
+  }
+
+  void _fastFoward() {
+    setState(() {
+      var current = _controller?.value.position.inSeconds ?? 0;
+      _controller?.seekTo(Duration(seconds: current + 30));
+      _controller?.play();
+    });
+  }
+
+  void _fastRewind() {
+    setState(() {
+      var current = _controller?.value.position.inSeconds ?? 0;
+      _controller?.seekTo(Duration(seconds: current - 30));
+      _controller?.play();
     });
   }
 
@@ -87,11 +103,14 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   @override
   Widget build(BuildContext context) {
     var controlPanel = ControlPanel(
-        key: _controlPanelKey,
-        isPlaying: _controller?.value.isPlaying ?? false,
-        percentPlayed: percentPlayed,
-        onPause: _onPause,
-        onPlay: _onPlay);
+      key: _controlPanelKey,
+      isPlaying: _controller?.value.isPlaying ?? false,
+      percentPlayed: percentPlayed,
+      onPause: _pause,
+      onPlay: _play,
+      onFastFoward: _fastFoward,
+      onFastRewind: _fastRewind,
+    );
 
     var scaffold = Scaffold(
       body: LoaderView(

@@ -8,13 +8,17 @@ class ControlPanel extends StatefulWidget {
   final double percentPlayed;
   final Function onPause;
   final Function onPlay;
+  final Function onFastFoward;
+  final Function onFastRewind;
 
   const ControlPanel(
       {Key? key,
       required this.isPlaying,
       required this.percentPlayed,
       required this.onPause,
-      required this.onPlay})
+      required this.onPlay,
+      required this.onFastFoward,
+      required this.onFastRewind})
       : super(key: key);
 
   @override
@@ -66,6 +70,14 @@ class ControlPanelState extends State<ControlPanel> {
     }
   }
 
+  void _onFastFoward() {
+    widget.onFastFoward();
+  }
+
+  void _onFastRewind() {
+    widget.onFastRewind();
+  }
+
   @override
   Widget build(BuildContext context) {
     var buttons = Row(
@@ -73,8 +85,8 @@ class ControlPanelState extends State<ControlPanel> {
       children: [
         ControlButton(
           focusNode: null,
-          icon: Icons.skip_previous,
-          onTapped: () => {},
+          icon: Icons.fast_rewind,
+          onTapped: _onFastRewind,
         ),
         ControlButton(
           focusNode: _playFocusNode,
@@ -83,8 +95,8 @@ class ControlPanelState extends State<ControlPanel> {
         ),
         ControlButton(
           focusNode: null,
-          icon: Icons.skip_next,
-          onTapped: () => {},
+          icon: Icons.fast_forward,
+          onTapped: _onFastFoward,
         ),
       ],
     );
