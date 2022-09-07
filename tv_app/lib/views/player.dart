@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:robinhood/components/loader_widget.dart';
 import 'package:robinhood/service/api.dart';
-import 'package:robinhood/views/control_panel.dart';
+import 'package:robinhood/controls/control_panel.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -19,6 +19,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   GlobalKey<ControlPanelState> _controlPanelKey = GlobalKey();
   VideoPlayerController? _controller;
   var loading = true;
+  var percentPlayed = 0.0;
   Map<String, String> headers = {};
 
   @override
@@ -47,7 +48,12 @@ class _PlayerWidgetState extends State<PlayerWidget> {
           _controller?.play();
         });
       });
-    // }
+    _controller?.addListener(() {
+      setState(() {
+        percentPlayed = _controller!.value.position.inSeconds /
+            _controller!.value.duration.inSeconds;
+      });
+    });
   }
 
   @override
@@ -83,6 +89,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     var controlPanel = ControlPanel(
         key: _controlPanelKey,
         isPlaying: _controller?.value.isPlaying ?? false,
+        percentPlayed: percentPlayed,
         onPause: _onPause,
         onPlay: _onPlay);
 
@@ -99,7 +106,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                           child: VideoPlayer(_controller!),
                         )
                       : Container()),
-              controlPanel!
+              controlPanel
             ],
           )),
     );
