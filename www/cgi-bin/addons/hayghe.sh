@@ -182,26 +182,34 @@ resolve() {
 	# echo "$html"
 
     url=$(echo "$html" | sed 's/.*<iframe//' | sed "s/.*src='http/http/" | sed 's/.*src="//' | sed "s/'.*//" | sed 's/".*//')
+    # echo "$url"
     if [[ $url == https://play.animevhay.xyz* ]] ; then
         id=$(echo "$url" | sed 's/.*id=//')
 		url="https://play.animevhay.xyz/player/${id}/playlist.m3u8?v=10"
 	    echo "{\"url\": \"${url}\", \"type\": \"video/mp4\", \"player\": \"ok.ru\"}"
-    else 
-        if [[ $url == https://fembed.com* ]] ; then
-            id=$(echo "$url" | sed 's/.*\///g')
-            r=$(jq -rn --arg x "$url1" '$x|@uri')
-            mediaUrl=$(curl -s "https://vanfem.com/api/source/$id" \
-            --data-raw "r=$r&d=vanfem.com" | jq -r '.data[-1].file')
-            echo "{\"url\": \"${mediaUrl}\", \"type\": \"video/mp4\", \"player\": \"vanfem.com\"}"
-        else
-            response=$(curl "$url" \
-                        -H 'authority: ok.ru' \
-                        --compressed -s
-                        )
-            resolved=$(echo "$response" | grep "data-options=" | sed 's/.*data-options=\"//' | sed 's/\".*//' | sed 's/.*u003Ehttps:/https:/g' | sed 's/\\\\u0026/\&/g' | sed 's/\&amp;/\&/g' | sed 's/\\\\.*//g')
-
-            echo "{\"url\": \"${resolved}\", \"type\": \"video/mp4\", \"player\": \"ok.ru\"}"
-        fi
+        exit 0
+    fi 
+      
+    if [[ $url == https://fembed.com* ]] ; then
+        id=$(echo "$url" | sed 's/.*\///g')
+        r=$(jq -rn --arg x "$url1" '$x|@uri')
+        mediaUrl=$(curl -s "https://vanfem.com/api/source/$id" \
+        --data-raw "r=$r&d=vanfem.com" | jq -r '.data[-1].file')
+        echo "{\"url\": \"${mediaUrl}\", \"type\": \"video/mp4\", \"player\": \"vanfem.com\"}"
+        exit 0
     fi
+    
+    if [[ $url == https://ok.ru* ]] ; then
+        response=$(curl "$url" \
+                    -H 'authority: ok.ru' \
+                    --compressed -s
+                    )
+        resolved=$(echo "$response" | grep "data-options=" | sed 's/.*data-options=\"//' | sed 's/\".*//' | sed 's/.*u003Ehttps:/https:/g' | sed 's/\\\\u0026/\&/g' | sed 's/\&amp;/\&/g' | sed 's/\\\\.*//g')
+        echo "{\"url\": \"${resolved}\", \"type\": \"video/mp4\", \"player\": \"ok.ru\"}"
+        exit 0
+    fi
+
+    echo "{\"url\": \"${url}\", \"type\": \"video/mp4\"}"
 }
+
 
