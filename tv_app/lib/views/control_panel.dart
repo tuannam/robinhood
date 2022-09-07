@@ -17,10 +17,10 @@ class ControlPanel extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<ControlPanel> createState() => _ControlPanelState();
+  State<ControlPanel> createState() => ControlPanelState();
 }
 
-class _ControlPanelState extends State<ControlPanel> {
+class ControlPanelState extends State<ControlPanel> {
   FocusNode? _playFocusNode;
   FocusNode? _fakeBtnFocusNode;
   var showControls = false;
@@ -47,6 +47,13 @@ class _ControlPanelState extends State<ControlPanel> {
       showControls = true;
     });
     _playFocusNode?.requestFocus();
+  }
+
+  void onHideControls() {
+    setState(() {
+      showControls = false;
+    });
+    _fakeBtnFocusNode?.requestFocus();
   }
 
   void _onPlayPressed() {
@@ -90,7 +97,7 @@ class _ControlPanelState extends State<ControlPanel> {
               child: Container(
                 width: 50,
                 height: 50,
-                color: Colors.blue.withOpacity(0.5),
+                color: Colors.blue.withOpacity(0.0),
               )),
     );
   }

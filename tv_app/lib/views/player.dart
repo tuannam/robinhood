@@ -16,6 +16,7 @@ class PlayerWidget extends StatefulWidget {
 }
 
 class _PlayerWidgetState extends State<PlayerWidget> {
+  GlobalKey<ControlPanelState> _controlPanelKey = GlobalKey();
   VideoPlayerController? _controller;
   var loading = true;
   Map<String, String> headers = {};
@@ -69,12 +70,22 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   }
 
   Future<bool> _onWillPop() async {
-    Navigator.of(context).pop();
+    if (_controlPanelKey.currentState?.showControls ?? false) {
+      _controlPanelKey.currentState?.onHideControls();
+    } else {
+      Navigator.of(context).pop();
+    }
     return false;
   }
 
   @override
   Widget build(BuildContext context) {
+    var controlPanel = ControlPanel(
+        key: _controlPanelKey,
+        isPlaying: _controller?.value.isPlaying ?? false,
+        onPause: _onPause,
+        onPlay: _onPlay);
+
     var scaffold = Scaffold(
       body: LoaderView(
           showLoader: loading,
@@ -88,10 +99,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
                           child: VideoPlayer(_controller!),
                         )
                       : Container()),
-              ControlPanel(
-                  isPlaying: _controller?.value.isPlaying ?? false,
-                  onPause: _onPause,
-                  onPlay: _onPlay)
+              controlPanel!
             ],
           )),
     );
