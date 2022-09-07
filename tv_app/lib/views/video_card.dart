@@ -32,6 +32,9 @@ class _VideoCardState extends State<VideoCard> {
   var lastShowDetails = DateTime.now().millisecondsSinceEpoch;
 
   void _onFocus(bool value) {
+    if (value) {
+      SystemSound.play(SystemSoundType.click);
+    }
     setState(() {
       isFocus = value;
     });
@@ -78,13 +81,14 @@ class _VideoCardState extends State<VideoCard> {
         children: [
           AspectRatio(
             aspectRatio: 150 / 225,
-            child: Container(
-                padding: EdgeInsets.all(5),
-                child: Image.network(
-                  widget.movie.image ??
-                      'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
-                  fit: BoxFit.fill,
-                )),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                widget.movie.image ??
+                    'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930',
+                fit: BoxFit.fill,
+              ),
+            ),
           ),
           Text(
             widget.movie.title ?? '',
@@ -101,7 +105,14 @@ class _VideoCardState extends State<VideoCard> {
         child: InkWell(
           onTap: () => {navToDetails()},
           child: Container(
-            color: isFocus ? Colors.red : Colors.transparent,
+            margin: const EdgeInsets.all(5),
+            padding: const EdgeInsets.all(5),
+            decoration: BoxDecoration(
+                border: Border.all(
+                    width: 3,
+                    color: isFocus ? Colors.white : Colors.transparent),
+                borderRadius: const BorderRadius.all(Radius.circular(10))),
+            // color: isFocus ? Colors.red : Colors.transparent,
             child: sizedBox,
           ),
         ));

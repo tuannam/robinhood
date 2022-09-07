@@ -77,7 +77,7 @@ class _SectionWidgetState extends State<SectionWidget> {
         Container(
             margin: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
             // color: Colors.yellow,
-            height: 250.0,
+            height: 263.0,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext content, int position) {
