@@ -6,6 +6,18 @@ import 'package:robinhood/controls/control_panel.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
 
+extension DurationExtension on Duration {
+  String _readableTime() {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final hours = this.inHours;
+    final minutes = this.inMinutes.remainder(60);
+    final seconds = this.inSeconds.remainder(60);
+    return "${twoDigits(hours)}:${twoDigits(minutes)}:${twoDigits(seconds)}";
+  }
+
+  String get readableTime => _readableTime();
+}
+
 class PlayerWidget extends StatefulWidget {
   final String link;
 
@@ -106,6 +118,8 @@ class _PlayerWidgetState extends State<PlayerWidget> {
       key: _controlPanelKey,
       isPlaying: _controller?.value.isPlaying ?? false,
       percentPlayed: percentPlayed,
+      duration: _controller?.value.duration.readableTime ?? "00:00:00",
+      position: _controller?.value.position.readableTime ?? "00:00:00",
       onPause: _pause,
       onPlay: _play,
       onFastFoward: _fastFoward,

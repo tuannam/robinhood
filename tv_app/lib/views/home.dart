@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:robinhood/components/search_button.dart';
 import 'package:robinhood/updater/updater.dart';
+import 'package:robinhood/views/hidden_webview.dart';
 import 'package:robinhood/views/search_view.dart';
 import 'package:robinhood/views/section_view.dart';
 import 'package:flutter/foundation.dart';
@@ -63,37 +64,36 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var ctx = context;
-
+    var main = SingleChildScrollView(
+      controller: scrollController,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: const EdgeInsets.all(20),
+              child: SearchButton(
+                onFocus: _onSearchFocus,
+                onSearch: _onSearchPressed,
+              ),
+            ),
+            SectionListWidget(
+              openDrawer: () {
+                _key.currentState?.openDrawer();
+              },
+              sections: sections,
+            )
+          ],
+        ),
+      ),
+    );
     return Scaffold(
         key: _key,
         drawer: Drawer(
           child: SettingsView(),
         ),
-        body: SingleChildScrollView(
-          controller: scrollController,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: const EdgeInsets.all(20),
-                  child: SearchButton(
-                    onFocus: _onSearchFocus,
-                    onSearch: _onSearchPressed,
-                  ),
-                ),
-                SectionListWidget(
-                  openDrawer: () {
-                    _key.currentState?.openDrawer();
-                  },
-                  sections: sections,
-                )
-              ],
-            ),
-          ),
-        ));
+        body: main);
   }
 }
 

@@ -6,6 +6,8 @@ import '../common.dart';
 class ControlPanel extends StatefulWidget {
   final bool isPlaying;
   final double percentPlayed;
+  final String duration;
+  final String position;
   final Function onPause;
   final Function onPlay;
   final Function onFastFoward;
@@ -15,6 +17,8 @@ class ControlPanel extends StatefulWidget {
       {Key? key,
       required this.isPlaying,
       required this.percentPlayed,
+      required this.duration,
+      required this.position,
       required this.onPause,
       required this.onPlay,
       required this.onFastFoward,
@@ -30,6 +34,7 @@ class ControlPanelState extends State<ControlPanel> {
   FocusNode? _fakeBtnFocusNode;
   var showControls = false;
   var progress = 0.0;
+  final timeTextStyle = const TextStyle(color: Colors.yellow, fontSize: 16);
 
   @override
   void initState() {
@@ -100,18 +105,38 @@ class ControlPanelState extends State<ControlPanel> {
         ),
       ],
     );
+    final maxWidth = MediaQuery.of(context).size.width - 100;
+    var timeLine = SizedBox(
+      width: maxWidth,
+      child: Container(
+          margin: const EdgeInsets.fromLTRB(50, 0, 50, 0),
+          child: Row(
+            children: [
+              Text(
+                widget.position,
+                style: timeTextStyle,
+              ),
+              const Spacer(),
+              Text(
+                widget.duration,
+                style: timeTextStyle,
+              )
+            ],
+          )),
+    );
     var controls = Column(
       children: [
         buttons,
         ProgressSlider(
           value: widget.percentPlayed,
-        )
+        ),
+        timeLine
       ],
     );
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
       padding: const EdgeInsets.all(10),
-      height: 100,
+      height: 120,
       // color: Colors.grey.withOpacity(0.5),
       child: showControls
           ? controls
