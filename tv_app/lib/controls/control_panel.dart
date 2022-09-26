@@ -35,6 +35,7 @@ class ControlPanelState extends State<ControlPanel> {
   var showControls = false;
   var progress = 0.0;
   final timeTextStyle = const TextStyle(color: Colors.yellow, fontSize: 16);
+  var lastPressedTime = DateTime.now().millisecondsSinceEpoch;
 
   @override
   void initState() {
@@ -68,11 +69,17 @@ class ControlPanelState extends State<ControlPanel> {
   }
 
   void _onPlayPressed() {
+    if (DateTime.now().millisecondsSinceEpoch - lastPressedTime < 1000) {
+      return;
+    }
+
     if (widget.isPlaying) {
       widget.onPause();
     } else {
       widget.onPlay();
     }
+
+    lastPressedTime = DateTime.now().millisecondsSinceEpoch;
   }
 
   void _onFastFoward() {

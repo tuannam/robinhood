@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:robinhood/app_config.dart';
 import 'package:robinhood/components/loader_widget.dart';
+import 'package:robinhood/db/film.dart';
 import 'package:robinhood/service/api.dart';
 import 'package:robinhood/controls/control_panel.dart';
 import 'package:video_player/video_player.dart';
@@ -28,7 +30,7 @@ class PlayerWidget extends StatefulWidget {
 }
 
 class _PlayerWidgetState extends State<PlayerWidget> {
-  GlobalKey<ControlPanelState> _controlPanelKey = GlobalKey();
+  final GlobalKey<ControlPanelState> _controlPanelKey = GlobalKey();
   VideoPlayerController? _controller;
   var loading = true;
   var percentPlayed = 0.0;
@@ -56,8 +58,13 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     print('oxoplayer: ${mediaUrl}');
     _controller = VideoPlayerController.network(mediaUrl, httpHeaders: headers)
       ..initialize().then((_) {
-        setState(() {
-          _controller?.play();
+        AppConfig.of(context)?.filmDao.findByCode(widget.link).then((film) {
+          if (film != null) {
+            _controller?.seekTo(Duration(seconds: film.position));
+          }
+          setState(() {
+            _controller?.play();
+          });
         });
       });
     _controller?.addListener(() {
@@ -84,13 +91,33 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   void _pause() {
     setState(() {
       _controller?.pause();
+      saveCurrentPosition();
     });
+  }
+
+  void saveCurrentPosition() {
+    print('saveCurrentPosition');
+    final duration = _controller?.value.duration.inSeconds ?? 0;
+    final currentPos = _controller?.value.position.inSeconds ?? 0;
+    if (currentPos > 0 && duration > 0) {
+      AppConfig.of(context)?.filmDao.findByCode(widget.link).then((film) {
+        if (film == null) {
+          final newFilm =
+              Film(code: widget.link, duration: duration, position: currentPos);
+          AppConfig.of(context)?.filmDao.insertFilm(newFilm);
+        } else {
+          film.duration = duration;
+          film.position = currentPos;
+          AppConfig.of(context)?.filmDao.updateFilms([film]);
+        }
+      });
+    }
   }
 
   void _fastFoward() {
     setState(() {
       var current = _controller?.value.position.inSeconds ?? 0;
-      _controller?.seekTo(Duration(seconds: current + 30));
+      _controller?.seekTo(Duration(seconds: current + 15));
       _controller?.play();
     });
   }
@@ -98,7 +125,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   void _fastRewind() {
     setState(() {
       var current = _controller?.value.position.inSeconds ?? 0;
-      _controller?.seekTo(Duration(seconds: current - 30));
+      _controller?.seekTo(Duration(seconds: current - 15));
       _controller?.play();
     });
   }

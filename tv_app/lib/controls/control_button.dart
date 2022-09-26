@@ -18,7 +18,7 @@ class ControlButton extends StatefulWidget {
 
 class _ControlButtonState extends State<ControlButton> {
   var isFocus = false;
-  var lastPressedTime = DateTime.now().millisecondsSinceEpoch;
+  // var lastPressedTime = DateTime.now().millisecondsSinceEpoch;
 
   void _onFocus(bool value) {
     setState(() {
@@ -27,13 +27,8 @@ class _ControlButtonState extends State<ControlButton> {
   }
 
   void onTapped() {
-    if (DateTime.now().millisecondsSinceEpoch - lastPressedTime < 1000) {
-      return;
-    }
     print('onTapped');
     widget.onTapped();
-
-    lastPressedTime = DateTime.now().millisecondsSinceEpoch;
   }
 
   KeyEventResult _onKey(FocusNode node, RawKeyEvent event) {

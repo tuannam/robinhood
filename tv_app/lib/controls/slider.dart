@@ -27,7 +27,7 @@ class _ProgressSliderState extends State<ProgressSlider> {
             // border: Border.all(color: Colors.red),
             borderRadius: const BorderRadius.all(Radius.circular(5))),
         child: SizedBox(
-          width: maxWidth * widget.value,
+          width: (maxWidth - 50 - 50) * widget.value,
           child: Container(height: 3, color: Colors.blue),
         ),
       ),
